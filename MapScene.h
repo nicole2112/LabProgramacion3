@@ -1,16 +1,22 @@
 #pragma once
 
-#ifndef _MAP_SCENE_H
-#define _MAP_SCENE_H
+#ifndef MAPSCENE_H
+#define MAPSCENE_H
 
 #include "cocos2d.h"
+#include "MainMenuScene.h"
 
-class Map : public cocos2d::Scene {
+class MapScene : public cocos2d::Scene {
 public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
 
+    // implement the "static create()" method manually
+    CREATE_FUNC(MapScene);
+
+    //funciones callback
+    void regresarCloseCallback(cocos2d::Ref* pSender);
 };
 
 
