@@ -26,6 +26,9 @@
 #define __MAINMENU_SCENE_H__
 
 #include "cocos2d.h"
+#include "CCEventKeyboard.h"
+
+USING_NS_CC;
 
 class MainMenu : public cocos2d::Scene
 {
@@ -38,9 +41,17 @@ public:
     void salirCloseCallback(cocos2d::Ref* pSender);
     void mapaCloseCallback(cocos2d::Ref* pSender);
     void puntuacionCloseCallback(cocos2d::Ref* pSender);
-    
+
+   // void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+    void inicializarTeclado(void);
+    void presionarTecla(EventKeyboard::KeyCode key, Event *event);
+
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);
+private:
+    cocos2d::MenuItemFont* menuItem1;
+    cocos2d::MenuItemFont* menuItem2;
+    cocos2d::MenuItemFont* menuItem3;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
