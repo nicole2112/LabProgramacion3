@@ -77,6 +77,7 @@ bool MainMenu::init()
         return false;
     }
 
+
     log("Initializing scene");
 
     //1. Se asignan las variables para manejo de posiciones en la pantalla

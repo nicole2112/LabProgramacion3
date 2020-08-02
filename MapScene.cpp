@@ -27,6 +27,9 @@ bool MapScene::init()
 
     log("Initializing map scene");
 
+    auto bg = cocos2d::LayerColor::create(Color4B(51, 255, 238, 255));
+    this->addChild(bg, -1);
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -43,7 +46,7 @@ bool MapScene::init()
     if (label != nullptr) {
         // position the label on the center of the screen
         label->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - label->getContentSize().height));
-
+        label->setColor(Color3B::BLACK);
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
