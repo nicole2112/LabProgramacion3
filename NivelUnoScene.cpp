@@ -45,7 +45,7 @@ bool NivelUnoScene::init()
 
 void NivelUnoScene::GoBack(cocos2d::Ref* pSender) {
     auto scene = MapScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+    Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 }
 
 

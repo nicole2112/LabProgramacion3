@@ -4,7 +4,6 @@
 
 USING_NS_CC;
 
-//editando
 
 Scene* NivelDosScene::createScene()
 {
@@ -47,7 +46,7 @@ bool NivelDosScene::init()
 
 void NivelDosScene::GoBack(cocos2d::Ref* pSender) {
     auto scene = MapScene::createScene();
-    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+    Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 }
 
 
