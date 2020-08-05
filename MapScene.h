@@ -6,6 +6,9 @@
 #include "cocos2d.h"
 #include "MainMenuScene.h"
 
+USING_NS_CC;
+
+
 class MapScene : public cocos2d::Scene {
 public:
     static cocos2d::Scene* createScene();
@@ -17,8 +20,10 @@ public:
 
     //funciones callback
     void regresarCloseCallback(cocos2d::Ref* pSender);
+    void Play(Ref* pSender);
+    void NivelDos(Ref* pSender);
+    void NivelTres(Ref* pSender);
 };
 
 
 #endif // !MAPSCENE_H
-
