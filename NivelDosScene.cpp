@@ -4,6 +4,8 @@
 
 USING_NS_CC;
 
+//editando
+
 Scene* NivelDosScene::createScene()
 {
     // 'scene' is an autorelease object
