@@ -48,15 +48,20 @@ bool MapScene::init()
     auto menuItem2 = MenuItemFont::create("Nivel Dos", CC_CALLBACK_1(MapScene::NivelDos, this));
     auto menuItem3 = MenuItemFont::create("Nivel Tres", CC_CALLBACK_1(MapScene::NivelTres, this));
 
+    menuItem1->setColor(Color3B::BLACK);
+    menuItem2->setColor(Color3B::BLACK);
+    menuItem3->setColor(Color3B::BLACK);
+
+
     menuItem1->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 3));
     menuItem2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 2));
     menuItem3->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
 
     auto mapad = Menu::create(menuItem1,menuItem2,menuItem3, NULL);
     mapad->setPosition(Point(0, 0));
-    this->addChild(mapad);
+    this->addChild(mapad,1);
 
-    
+  
 
    
     //Título
