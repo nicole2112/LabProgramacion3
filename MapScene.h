@@ -5,6 +5,7 @@
 
 #include "cocos2d.h"
 #include "MainMenuScene.h"
+#include "CCEventKeyboard.h"
 
 USING_NS_CC;
 
@@ -23,6 +24,15 @@ public:
     void Play(Ref* pSender);
     void NivelDos(Ref* pSender);
     void NivelTres(Ref* pSender);
+    
+    // void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+    void inicializarTeclado(void);
+    void presionarTecla(EventKeyboard::KeyCode key, Event* event);
+
+private:
+    cocos2d::MenuItemFont* menuItem1;
+    cocos2d::MenuItemFont* menuItem2;
+    cocos2d::MenuItemFont* menuItem3;
 };
 
 
