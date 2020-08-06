@@ -20,6 +20,60 @@ Scene* MapScene::createScene()
     return scene;
 }
 
+void MapScene::inicializarTeclado()
+{
+    // Crear el escuchador de eventos de teclado
+    auto escuchador = EventListenerKeyboard::create();
+
+    escuchador->onKeyPressed = [](EventKeyboard::KeyCode, Event* event) {return true; };
+    escuchador->onKeyReleased = CC_CALLBACK_2(MapScene::presionarTecla, this);
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(escuchador, this);
+}
+
+void MapScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
+    switch (key) {
+    case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+        if (menuItem1->getColor() == Color3B::GREEN) {
+            Play(this);
+        }
+        else if (menuItem2->getColor() == Color3B::GREEN) {
+            NivelDos(this);
+        }
+        else if (menuItem3->getColor() == Color3B::GREEN) {
+            NivelTres(this);
+        }
+        log("Right arrow pressed");
+        break;
+    case EventKeyboard::KeyCode::KEY_UP_ARROW:
+        if (menuItem2->getColor() == Color3B::GREEN) {
+            menuItem2->setColor(Color3B::BLACK);
+            menuItem1->setColor(Color3B::GREEN);
+        }
+        else if (menuItem3->getColor() == Color3B::GREEN) {
+            menuItem3->setColor(Color3B::BLACK);
+            menuItem2->setColor(Color3B::GREEN);
+        }
+        log("Up arrow pressed");
+        break;
+    case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+        if (menuItem1->getColor() == Color3B::GREEN) {
+            menuItem1->setColor(Color3B::BLACK);
+            menuItem2->setColor(Color3B::GREEN);
+        }
+        else if (menuItem2->getColor() == Color3B::GREEN) {
+            menuItem2->setColor(Color3B::BLACK);
+            menuItem3->setColor(Color3B::GREEN);
+        }
+        log("Down arrow pressed");
+        break;
+    case EventKeyboard::KeyCode::KEY_ESCAPE:
+        regresarCloseCallback(this);
+        log("Escape key pressed");
+        break;
+    }
+}
+
 bool MapScene::init()
 {
     // 1. super init first
@@ -44,9 +98,9 @@ bool MapScene::init()
     }
 
     //Niveles Leonardo Pazzetti
-    auto menuItem1 = MenuItemFont::create("Play", CC_CALLBACK_1(MapScene::Play, this));
-    auto menuItem2 = MenuItemFont::create("Nivel Dos", CC_CALLBACK_1(MapScene::NivelDos, this));
-    auto menuItem3 = MenuItemFont::create("Nivel Tres", CC_CALLBACK_1(MapScene::NivelTres, this));
+    menuItem1 = MenuItemFont::create("Play", CC_CALLBACK_1(MapScene::Play, this));
+    menuItem2 = MenuItemFont::create("Nivel Dos", CC_CALLBACK_1(MapScene::NivelDos, this));
+    menuItem3 = MenuItemFont::create("Nivel Tres", CC_CALLBACK_1(MapScene::NivelTres, this));
 
     menuItem1->setColor(Color3B::BLACK);
     menuItem2->setColor(Color3B::BLACK);
