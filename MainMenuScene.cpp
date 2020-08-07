@@ -87,9 +87,9 @@ bool MainMenu::init()
     //2. Colocando la imagen de fondo
     auto spriteFondo = Sprite::create("Images/background.jpg");
     spriteFondo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-    this->addChild(spriteFondo, 0); //Añadir la imagen a la pantalla
+    this->addChild(spriteFondo, 0); //AÃ±adir la imagen a la pantalla
 
-    //3. Crear cada menú ítem 
+    //3. Crear cada menÃº Ã­tem 
     menuItem1 = MenuItemFont::create("MAPA", CC_CALLBACK_1(MainMenu::mapaCloseCallback, this));
     menuItem1->setFontSizeObj(22);
 
@@ -99,19 +99,19 @@ bool MainMenu::init()
     menuItem3 = MenuItemFont::create("SALIR", CC_CALLBACK_1(MainMenu::salirCloseCallback, this));
     menuItem3->setFontSizeObj(22);
 
-    //Estableciendo las posiciones de cada ítem
+    //Estableciendo las posiciones de cada Ã­tem
     menuItem1->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 3));
     menuItem2->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 2));
     menuItem3->setPosition(Vec2(origin.x +visibleSize.width / 2, (visibleSize.height / 4) * 1));
 
-    menuItem1->setColor(Color3B::ORANGE); //color inicial de la primera opción
+    menuItem1->setColor(Color3B::ORANGE); //color inicial de la primera opciÃ³n
 
-    //4. Crear el menú que contiene cada ítem
+    //4. Crear el menÃº que contiene cada Ã­tem
     auto menu = Menu::create(menuItem1, menuItem2, menuItem3, NULL);
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    //5. Agregar el label con el título
+    //5. Agregar el label con el tÃ­tulo
     auto label = Label::createWithTTF("PRIMER JUEGO", "fonts/Marker Felt.ttf", 24);
     if (label != nullptr) {
         // position the label on the center of the screen
@@ -131,6 +131,9 @@ bool MainMenu::init()
 
 void MainMenu::puntuacionCloseCallback(Ref* sender) {
     log("Abriendo Puntuacion");
+    auto scene = Puntuacion::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(1, scene));
+    
 }
 
 void MainMenu::mapaCloseCallback(Ref* sender) {
