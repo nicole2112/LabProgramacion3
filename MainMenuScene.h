@@ -42,7 +42,7 @@ public:
     void mapaCloseCallback(cocos2d::Ref* pSender);
     void puntuacionCloseCallback(cocos2d::Ref* pSender);
 
-   // void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
+   // Funciones para inicializar teclado y manejar sus eventos
     void inicializarTeclado(void);
     void presionarTecla(EventKeyboard::KeyCode key, Event *event);
 

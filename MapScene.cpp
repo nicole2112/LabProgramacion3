@@ -20,6 +20,7 @@ Scene* MapScene::createScene()
     return scene;
 }
 
+//Inicializar los eventos del teclado
 void MapScene::inicializarTeclado()
 {
     // Crear el escuchador de eventos de teclado
@@ -31,9 +32,12 @@ void MapScene::inicializarTeclado()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(escuchador, this);
 }
 
+//Definir los eventos al presionar una tecla respectiva
 void MapScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
+
     switch (key) {
     case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+
         if (menuItem1->getColor() == Color3B::GREEN) {
             Play(this);
         }
@@ -46,6 +50,7 @@ void MapScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
         log("Right arrow pressed");
         break;
     case EventKeyboard::KeyCode::KEY_UP_ARROW:
+
         if (menuItem2->getColor() == Color3B::GREEN) {
             menuItem2->setColor(Color3B::BLACK);
             menuItem1->setColor(Color3B::GREEN);
@@ -57,6 +62,7 @@ void MapScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
         log("Up arrow pressed");
         break;
     case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+
         if (menuItem1->getColor() == Color3B::GREEN) {
             menuItem1->setColor(Color3B::BLACK);
             menuItem2->setColor(Color3B::GREEN);
@@ -68,7 +74,10 @@ void MapScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
         log("Down arrow pressed");
         break;
     case EventKeyboard::KeyCode::KEY_ESCAPE:
-        regresarCloseCallback(this);
+
+        if (menuItem1->getColor() == Color3B::GREEN) {
+            regresarCloseCallback(this);
+        }
         log("Escape key pressed");
         break;
     }
@@ -84,30 +93,30 @@ bool MapScene::init()
 
     log("Initializing map scene");
 
-    auto bg = cocos2d::LayerColor::create(Color4B(51, 255, 238, 255));
+    auto bg = cocos2d::LayerColor::create(Color4B(30, 144, 255, 255));
     this->addChild(bg, -1);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     //Agregar imagen de mapa
-    auto mapa = Sprite::create("images/mapa.png");
+    auto mapa = Sprite::create("Images/mapa.png");
     if (mapa != nullptr) {
         mapa->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
         this->addChild(mapa, 0);
     }
 
     //Niveles Leonardo Pazzetti
-    menuItem1 = MenuItemFont::create("Play", CC_CALLBACK_1(MapScene::Play, this));
-    menuItem2 = MenuItemFont::create("Nivel Dos", CC_CALLBACK_1(MapScene::NivelDos, this));
-    menuItem3 = MenuItemFont::create("Nivel Tres", CC_CALLBACK_1(MapScene::NivelTres, this));
+    menuItem1 = MenuItemFont::create("Nivel 1", CC_CALLBACK_1(MapScene::Play, this));
+    menuItem2 = MenuItemFont::create("Nivel 2", CC_CALLBACK_1(MapScene::NivelDos, this));
+    menuItem3 = MenuItemFont::create("Nivel 3", CC_CALLBACK_1(MapScene::NivelTres, this));
 
-    menuItem1->setColor(Color3B::BLACK);
+    menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);
     menuItem3->setColor(Color3B::BLACK);
 
-    //Posisciones de los niveles - David
-    menuItem1->setPosition(Point(visibleSize.width / 4, (visibleSize.height / 4) * 3));
+    //Posiciones de los niveles - David
+    menuItem1->setPosition(Point(visibleSize.width / 3, (visibleSize.height / 4) * 3));
     menuItem2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
     menuItem3->setPosition(Point(visibleSize.width / 1.5, (visibleSize.height / 4) * 3));
     //Se ajustan las posiciones de acuerdo al mapa
@@ -116,8 +125,8 @@ bool MapScene::init()
     mapad->setPosition(Point(0, 0));
     this->addChild(mapad, 1);
 
-
-
+    //Eventos del teclado
+    MapScene::inicializarTeclado();
 
     //Título
     auto label = Label::createWithTTF("Mapa", "fonts/Marker Felt.ttf", 24);
