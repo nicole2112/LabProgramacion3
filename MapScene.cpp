@@ -106,19 +106,20 @@ bool MapScene::init()
     menuItem2->setColor(Color3B::BLACK);
     menuItem3->setColor(Color3B::BLACK);
 
+    //Posisciones de los niveles - David
+    menuItem1->setPosition(Point(visibleSize.width / 4, (visibleSize.height / 4) * 3));
+    menuItem2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
+    menuItem3->setPosition(Point(visibleSize.width / 1.5, (visibleSize.height / 4) * 3));
+    //Se ajustan las posiciones de acuerdo al mapa
 
-    menuItem1->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 3));
-    menuItem2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 2));
-    menuItem3->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
-
-    auto mapad = Menu::create(menuItem1,menuItem2,menuItem3, NULL);
+    auto mapad = Menu::create(menuItem1, menuItem2, menuItem3, NULL);
     mapad->setPosition(Point(0, 0));
-    this->addChild(mapad,1);
+    this->addChild(mapad, 1);
 
-  
 
-   
-    //TÃ­tulo
+
+
+    //Título
     auto label = Label::createWithTTF("Mapa", "fonts/Marker Felt.ttf", 24);
     if (label != nullptr) {
         // position the label on the center of the screen
@@ -158,10 +159,10 @@ void MapScene::NivelTres(cocos2d::Ref* pSender)
 
 void MapScene::regresarCloseCallback(Ref* pSender)
 {
-    log("Regresando al menÃº principal");
+    log("Regresando al menú principal");
     //creando la escena
     auto scene = MainMenu::createScene();
-    //Reemplazando la escena actual con la siguiente, se aplica un efecto de transiciÃ³n
+    //Reemplazando la escena actual con la siguiente, se aplica un efecto de transición
     Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 }
 
