@@ -39,6 +39,17 @@ bool NivelTresScene::init()
     auto mapa = Menu::create(menuItem1, NULL);
     mapa->setPosition(Point(0, 0));
     this->addChild(mapa);
+    //David
+    auto label = Label::createWithTTF("TERCER JUEGO", "fonts/Marker Felt.ttf", 24);
+    if (label != nullptr) {
+        // position the label on the center of the screen
+        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+            origin.y + visibleSize.height - label->getContentSize().height));
+
+        // add the label as a child to this layer
+        this->addChild(label, 1);
+    }
+
 
     return true;
 }
