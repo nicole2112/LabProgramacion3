@@ -93,7 +93,7 @@ void Puntuacion::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
     case EventKeyboard::KeyCode::KEY_ESCAPE:
 
         auto scene = MainMenu::createScene();
-        Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+        Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 
         break;
 
