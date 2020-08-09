@@ -2,7 +2,10 @@
 #define __NIVELUNO_SCENE_H__
 
 #include "cocos2d.h"
-
+#include "extensions/cocos-ext.h"
+#include"ui/CocosGUI.h"
+USING_NS_CC;
+USING_NS_CC_EXT;
 class NivelUnoScene : public cocos2d::Layer
 {
 public:
@@ -18,10 +21,10 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(NivelUnoScene);
 
-    cocos2d::Sprite* mySprite;
+    cocos2d::Sprite* Ruleta;
 
     void GoBack(Ref* pSender);
-
+    void spinR( Ref* sender, ui::Widget::TouchEventType type);
 };
 
 #endif // __NIVELUNO_SCENE_H__
