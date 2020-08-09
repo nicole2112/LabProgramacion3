@@ -55,7 +55,16 @@ bool NivelUnoScene::init()
    this->addChild(botonS);
    botonS->addTouchEventListener( CC_CALLBACK_2( NivelUnoScene::spinR, this ) );
 
-  
+      //David
+    auto label = Label::createWithTTF("PRIMER JUEGO", "fonts/Marker Felt.ttf", 24);
+    if (label != nullptr) {
+        // position the label on the center of the screen
+        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+            origin.y + visibleSize.height - label->getContentSize().height));
+
+        // add the label as a child to this layer
+        this->addChild(label, 1);
+    }
 
     return true;
 }
