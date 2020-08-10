@@ -23,8 +23,17 @@ public:
 
     cocos2d::Sprite* Ruleta;
 
+    void selectCategory();
+    int angle, vueltas;
+
+    //Label* category;
+    Sprite* actualCategory;
+
+
+    //Funciones callback
     void GoBack(Ref* pSender);
     void spinR( Ref* sender, ui::Widget::TouchEventType type);
+
 };
 
 #endif // __NIVELUNO_SCENE_H__
