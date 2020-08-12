@@ -5,6 +5,7 @@
 #include"ui/CocosGUI.h"
 #include <thread>
 #include <iostream>
+#include <string>
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -34,11 +35,11 @@ bool NivelUnoScene::init()
     {
         return false;
     }
-    //Variables de tamaño y posición de ventana
+    //Variables de tamaÃ±o y posiciÃ³n de ventana
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
 
-    //Título
+    //TÃ­tulo
     auto titulo = Sprite::create("images/tituloRuleta.png");
     if (titulo != nullptr) {
         titulo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titulo->getContentSize().height + 20));
@@ -57,7 +58,7 @@ bool NivelUnoScene::init()
         this->addChild(instrucciones, 1);
     }
 
-    //Cuadro de categorías
+    //Cuadro de categorÃ­as
     auto categorias = Sprite::create("Images/categorias.png");
     if (categorias != nullptr) {
         categorias->setPosition(Vec2(origin.x + visibleSize.width / 4 - 30, origin.y + visibleSize.height / 3));
@@ -65,29 +66,29 @@ bool NivelUnoScene::init()
     }
 
 
-    //Crear el botón para girar la ruleta y posicionarlo
+    //Crear el botÃ³n para girar la ruleta y posicionarlo
     ui::Button *botonS = ui::Button::create("images/button1.png", "images/button2.png");
     botonS->setPosition(Vec2(visibleSize.width / 2 + origin.x, (visibleSize.height / 5 + origin.y) - 20));
 
-    //Menú ítem de regresar a mapa
+    //MenÃº Ã­tem de regresar a mapa
    auto menuItem1 = MenuItemFont::create("GoBack", CC_CALLBACK_1(NivelUnoScene::GoBack, this));
    menuItem1->setPosition(Point(visibleSize.width / 5, (visibleSize.height / 5) -25));
    auto mapa = Menu::create(menuItem1, NULL);
    mapa->setPosition(Point(0, 0));
 
-   //Creación del sprite de la ruleta y posicionarla
+   //CreaciÃ³n del sprite de la ruleta y posicionarla
    Ruleta = Sprite::create("images/ruleta.png");
    Ruleta->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 2)+5));
    
-   //Añadir botones y ruleta a la escena
+   //AÃ±adir botones y ruleta a la escena
    this->addChild(Ruleta,1);
    this->addChild(mapa,1);
    this->addChild(botonS,2);
 
-   //Añadirle evento al botón que hace girar la ruleta 
+   //AÃ±adirle evento al botÃ³n que hace girar la ruleta 
    botonS->addTouchEventListener( CC_CALLBACK_2( NivelUnoScene::spinR, this ) );
 
-   //Agregar la categoría actual
+   //Agregar la categorÃ­a actual
    actualCategory = Sprite::create("images/empty.png");
    if (actualCategory != nullptr) {
        actualCategory->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 2) + 95));
@@ -161,20 +162,151 @@ void NivelUnoScene::selectCategory() {
     vueltas = Ruleta->getRotation() / 360;
     this->angle = Ruleta->getRotation() - (360 * vueltas);
 
+    //Size y origin para posicionar botones
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Point origin = Director::getInstance()->getVisibleOrigin();
+    
+    //Se crea el label donde sale la pregunta
+    auto pregunta = Label::createWithTTF("", "fonts/Marker Felt.ttf", 18);
+    if (pregunta != nullptr) {
+        pregunta->setColor(Color3B::WHITE);
+        // Pone el Label a la derecha de la pantalla
+        pregunta->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 175, origin.y + (visibleSize.height / 2) + 120));
+
+        // AÃ±ade el child al layer
+        this->addChild(pregunta, 1);
+    }
+    
     if (angle >= 90 && angle < 180) {
         actualCategory->setTexture("Images/arte.png");
+        
+        //Agrega los botones de opcion
+        ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
+        this->addChild(opcion1, 2);
+        ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
+        this->addChild(opcion2, 2);
+        ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
+        this->addChild(opcion3, 2);
+
+        //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
+        string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+        Questions[0][0] = "Pregunta 1";
+        Questions[1][0] = "Pregunta 2";
+        Questions[2][0] = "Pregunta 3";
+        for (int i = 0; i < 3; i++) 
+        {
+            for (int j = 1; j < 4; j++) 
+            {
+                Questions[i][j] = "Opcion " + j;
+            }
+        }
+        
+        //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
+        int random = (rand() % 3);
+        pregunta->setString("Arte\n"+Questions[random][0]);
+        
         log("Arte");
     }
     else if (angle < 90  && angle >= 0) {
         actualCategory->setTexture("Images/ciencia.png");
+        
+        //Agrega los botones de opcion
+        ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
+        this->addChild(opcion1, 2);
+        ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
+        this->addChild(opcion2, 2);
+        ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
+        this->addChild(opcion3, 2);
+
+        //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
+        string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+        Questions[0][0] = "Pregunta 1";
+        Questions[1][0] = "Pregunta 2";
+        Questions[2][0] = "Pregunta 3";
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 1; j < 4; j++)
+            {
+                Questions[i][j] = "Opcion " + j;
+            }
+        }
+
+        //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
+        int random = (rand() % 3);
+        pregunta->setString("Ciencia\n"+Questions[random][0]);
+        
         log("Ciencia");
     }
     else if (angle >= 180 && angle < 270) {
         actualCategory->setTexture("Images/politica.png");
+        
+        //Agrega los botones de opcion
+        ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
+        this->addChild(opcion1, 2);
+        ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
+        this->addChild(opcion2, 2);
+        ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
+        this->addChild(opcion3, 2);
+
+        //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
+        string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+        Questions[0][0] = "Pregunta 1";
+        Questions[1][0] = "Pregunta 2";
+        Questions[2][0] = "Pregunta 3";
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 1; j < 4; j++)
+            {
+                Questions[i][j] = "Opcion " + j;
+            }
+        }
+
+        //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
+        int random = (rand() % 3);
+        pregunta->setString("Politica\n"+Questions[random][0]);
+        
         log("Politica");
     }
     else if (angle >= 270 && angle < 360) {
         actualCategory->setTexture("Images/historia.png");
+        
+        //Agrega los botones de opcion
+        ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
+        this->addChild(opcion1, 2);
+        ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
+        this->addChild(opcion2, 2);
+        ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+        opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
+        this->addChild(opcion3, 2);
+
+        //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
+        string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+        Questions[0][0] = "Pregunta 1";
+        Questions[1][0] = "Pregunta 2";
+        Questions[2][0] = "Pregunta 3";
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 1; j < 4; j++)
+            {
+                Questions[i][j] = "Opcion " + j;
+            }
+        }
+
+        //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
+        int random = (rand() % 3);
+        pregunta->setString("Historia\n"+Questions[random][0]);
+        
         log("Historia");
     }
 }
