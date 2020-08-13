@@ -107,9 +107,9 @@ bool MapScene::init()
     }
 
     //Niveles Leonardo Pazzetti
-    menuItem1 = MenuItemFont::create("Nivel 1", CC_CALLBACK_1(MapScene::Play, this));
-    menuItem2 = MenuItemFont::create("Nivel 2", CC_CALLBACK_1(MapScene::NivelDos, this));
-    menuItem3 = MenuItemFont::create("Nivel 3", CC_CALLBACK_1(MapScene::NivelTres, this));
+    menuItem1 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::Play, this));
+    menuItem2 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::NivelDos, this));
+    menuItem3 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::NivelTres, this));
 
     menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);
@@ -128,7 +128,7 @@ bool MapScene::init()
     //Eventos del teclado
     MapScene::inicializarTeclado();
 
-    //Título
+    //TÃ­tulo
     auto label = Label::createWithTTF("Mapa", "fonts/Marker Felt.ttf", 24);
     if (label != nullptr) {
         // position the label on the center of the screen
@@ -168,10 +168,10 @@ void MapScene::NivelTres(cocos2d::Ref* pSender)
 
 void MapScene::regresarCloseCallback(Ref* pSender)
 {
-    log("Regresando al menú principal");
+    log("Regresando al menÃº principal");
     //creando la escena
     auto scene = MainMenu::createScene();
-    //Reemplazando la escena actual con la siguiente, se aplica un efecto de transición
+    //Reemplazando la escena actual con la siguiente, se aplica un efecto de transiciÃ³n
     Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 }
 
