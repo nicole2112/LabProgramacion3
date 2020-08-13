@@ -310,3 +310,23 @@ void NivelUnoScene::selectCategory() {
         log("Historia");
     }
 }
+
+//Se aplica este metodo en conjunto a las respuestas, se le asiganara false a las respuestas malas  viceversa. -David
+bool NivelUnoScene::RespuestaCorrectaOIncorrecta(bool respuesta)
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Point origin = Director::getInstance()->getVisibleOrigin();
+
+    if (respuesta)
+    {
+        auto puntos = Sprite::create("images/+100puntos.png");
+        puntos->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 ) - 20));
+        this->addChild(puntos, 2);
+    }
+    else
+    {
+        auto puntos = Sprite::create("images/-50puntos.png");
+        puntos->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2) - 20));
+        this->addChild(puntos, 2);
+    }
+}
