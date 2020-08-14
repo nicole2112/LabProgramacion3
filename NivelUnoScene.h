@@ -33,6 +33,9 @@ public:
     //Funciones callback
     void GoBack(Ref* pSender);
     void spinR( Ref* sender, ui::Widget::TouchEventType type);
+    
+    void addSprite();
+    void addSpriteBad();
 
 };
 
