@@ -21,14 +21,27 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(NivelUnoScene);
 
+private:
+
     cocos2d::Sprite* Ruleta;
+
+    int puntuacion;
+    Label* puntuacionLabel;
 
     //Función para seleccionar la categoría en base a la ruleta
     void selectCategory();
     int angle, vueltas;
 
     Size visibleSize;
-    Label* pregunta;
+    Label* pregunta; //label que contiene la pregunta a mostrarse
+    //MenuItemFont* opcion1; // opciones de las preguntas
+    //MenuItemFont* opcion2; 
+    //MenuItemFont* opcion3;
+
+    ui::Button* opcion1;
+    ui::Button* opcion2;
+    ui::Button* opcion3;
+    bool checkrep(int, int[]);
 
     //Funciones para las preguntas de cada categoría
     void arte();

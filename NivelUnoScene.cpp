@@ -113,6 +113,75 @@ bool NivelUnoScene::init()
         this->addChild(puntosSprite, 1);
     }
 
+    //Agrega los botones de opciones
+
+    opcion1 = ui::Button::create("images/CloseNormal2.png", "images/CloseSelected2.png");
+    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
+        {
+            switch (type)
+            {
+            case cocos2d::ui::Widget::TouchEventType::BEGAN:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::MOVED:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::ENDED:
+                addSprite();
+                break;
+            case cocos2d::ui::Widget::TouchEventType::CANCELED:
+                break;
+            default:
+                break;
+            }
+        });
+    this->addChild(opcion1);
+    opcion1->setVisible(false);
+
+    opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
+        {
+            switch (type)
+            {
+            case cocos2d::ui::Widget::TouchEventType::BEGAN:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::MOVED:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::ENDED:
+                addSpriteBad();
+                break;
+            }
+        });
+    this->addChild(opcion2, 2);
+    opcion2->setVisible(false);
+
+    opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
+    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
+        {
+            switch (type)
+            {
+            case cocos2d::ui::Widget::TouchEventType::BEGAN:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::MOVED:
+                break;
+            case cocos2d::ui::Widget::TouchEventType::ENDED:
+                addSpriteBad();
+                break;
+            }
+        });
+    this->addChild(opcion3, 2);
+    opcion3->setVisible(false);
+
+    this->puntuacion = 0;
+    //Se inicializa label de puntuación
+    puntuacionLabel = Label::createWithTTF("Puntuacion: " + to_string(puntuacion), "fonts/Marker Felt.ttf", 18);
+    if (puntuacionLabel != nullptr) {
+        puntuacionLabel->setColor(Color3B::WHITE);
+        // Pone el Label a la derecha de la pantalla
+        puntuacionLabel->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 170, origin.y + 40));
+
+        // Añade el child al layer
+        this->addChild(puntuacionLabel, 1);
+    }
+
     return true;
 }
 
@@ -154,6 +223,10 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
         Ruleta->runAction(rotacion2);
 
         puntosSprite->setTexture("images/empty.png");
+        pregunta->setString("");
+        opcion1->setVisible(false);
+        opcion2->setVisible(false);
+        opcion3->setVisible(false);
 
         break;
 
@@ -177,6 +250,7 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
     default:
         break;
     }
+
 }
 
 //Función que selecciona la categoría en base al ángulo de la rueda
@@ -214,69 +288,25 @@ void NivelUnoScene::selectCategory() {
         log("Historia");
     }
 
+    opcion1->setVisible(true);
+    opcion2->setVisible(true);
+    opcion3->setVisible(true);
+
 }
 
-//Funciones de cada categoria
+//FUNCIONES PARA LAS PREGUNTAS Y OPCIONES DE CADA CATEGORÍA
 
+//Revisa si ya existe la posición de las opciones en el arreglo de posiciones
+bool NivelUnoScene::checkrep(int n, int num[])
+{
+    for (int i = 0; i <= 2; i++)
+        if (n == num[i])
+            return true;
+    return false;
+}
 //ARTE
-void NivelUnoScene::arte() 
+void NivelUnoScene::arte()
 { 
-
-    //Agrega los botones de opcion
-    ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
-    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion1);
-
-    ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
-    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            }
-        });
-    this->addChild(opcion2, 2);
-
-    ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
-    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSpriteBad();
-                break;
-            }
-        });
-    this->addChild(opcion3, 2);
 
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
@@ -295,74 +325,29 @@ void NivelUnoScene::arte()
     int random = (rand() % 3);
     pregunta->setString("Arte\n" + Questions[random][0]);
 
+    //Para que las posiciones de los botones sean de manera aleatoria
+    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int pos;//guardará número random entre 0 y 2
+    for (int i = 0; i <= 2; i++) 
+    {
+        do {
+            pos = rand() % 3;
+        } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
+
+        posiciones[i] = pos;     
+    }
+       
+    //Colocar las posiciones de cada botón
+    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40*posiciones[0])) - 20));
+    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
+    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
+
 }
 
 //CIENCIA
 void NivelUnoScene::ciencia() 
 {
-    //Agrega los botones de opcion
-    ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
-    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion1, 2);
-
-    ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
-    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion2, 2);
-
-    ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
-    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSpriteBad();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion3, 2);
+    
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
@@ -379,75 +364,28 @@ void NivelUnoScene::ciencia()
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     int random = (rand() % 3);
     pregunta->setString("Ciencia\n" + Questions[random][0]);
+
+    //Para que las posiciones de los botones sean de manera aleatoria
+    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int pos;//guardará número random entre 0 y 2
+    for (int i = 0; i <= 2; i++)
+    {
+        do {
+            pos = rand() % 3;
+        } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
+
+        posiciones[i] = pos;
+    }
+
+    //Colocar las posiciones de cada botón
+    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
+    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
+    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
 }
 
 //POLÍTICA
 void NivelUnoScene::politica() 
 {
-    //Agrega los botones de opcion
-    ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
-    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion1, 2);
-
-    ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
-    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion2, 2);
-
-    ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
-    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSpriteBad();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion3, 2);
-
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
@@ -464,75 +402,28 @@ void NivelUnoScene::politica()
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     int random = (rand() % 3);
     pregunta->setString("Politica\n" + Questions[random][0]);
+
+    //Para que las posiciones de los botones sean de manera aleatoria
+    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int pos;//guardará número random entre 0 y 2
+    for (int i = 0; i <= 2; i++)
+    {
+        do {
+            pos = rand() % 3;
+        } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
+
+        posiciones[i] = pos;
+    }
+
+    //Colocar las posiciones de cada botón
+    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
+    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
+    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
 }
 
 //HISTORIA
 void NivelUnoScene::historia()
 {
-    //Agrega los botones de opcion
-    ui::Button* opcion1 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 90) - 20));
-    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion1, 2);
-
-    ui::Button* opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 50) - 20));
-    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion2, 2);
-
-    ui::Button* opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10) - 20));
-    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion3, 2);
-
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
@@ -549,6 +440,23 @@ void NivelUnoScene::historia()
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     int random = (rand() % 3);
     pregunta->setString("Historia\n" + Questions[random][0]);
+  
+    //Para que las posiciones de los botones sean de manera aleatoria
+    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int pos;//guardará número random entre 0 y 2
+    for (int i = 0; i <= 2; i++)
+    {
+        do {
+            pos = rand() % 3;
+        } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
+
+        posiciones[i] = pos;
+    }
+
+    //Colocar las posiciones de cada botón
+    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
+    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
+    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
 }
 
 //Ambos metodos agregan los sprites de los puntajes
@@ -556,9 +464,13 @@ void NivelUnoScene::historia()
 void NivelUnoScene::addSprite()
 {
     puntosSprite->setTexture("images/+100puntos.png");
+    this->puntuacion += 100;
+    puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 }
 
 void NivelUnoScene::addSpriteBad()
 {
     puntosSprite->setTexture("images/-50puntos.png");
+    this->puntuacion -= 50;
+    puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 }
