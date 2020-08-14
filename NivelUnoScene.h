@@ -23,12 +23,23 @@ public:
 
     cocos2d::Sprite* Ruleta;
 
+    //Función para seleccionar la categoría en base a la ruleta
     void selectCategory();
     int angle, vueltas;
 
-    //Label* category;
+    Size visibleSize;
+    Label* pregunta;
+
+    //Funciones para las preguntas de cada categoría
+    void arte();
+    void historia();
+    void politica();
+    void ciencia();
+
+    //Sprite que contiene la imagen con el título respectivo a cada categoría
     Sprite* actualCategory;
 
+    Sprite* puntosSprite;
 
     //Funciones callback
     void GoBack(Ref* pSender);
