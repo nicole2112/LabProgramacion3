@@ -6,6 +6,9 @@
 #include"ui/CocosGUI.h"
 USING_NS_CC;
 USING_NS_CC_EXT;
+
+#include <utility>
+
 class NivelUnoScene : public cocos2d::Layer
 {
 public:
@@ -34,13 +37,14 @@ private:
 
     Size visibleSize;
     Label* pregunta; //label que contiene la pregunta a mostrarse
-    //MenuItemFont* opcion1; // opciones de las preguntas
-    //MenuItemFont* opcion2; 
-    //MenuItemFont* opcion3;
 
-    ui::Button* opcion1;
-    ui::Button* opcion2;
-    ui::Button* opcion3;
+    //opciones a cada pregunta
+    MenuItemFont* item1;
+    MenuItemFont* item2;
+    MenuItemFont* item3;
+    MenuItemFont* item4;
+    Menu* mapad;
+
     bool checkrep(int, int[]);
 
     //Funciones para las preguntas de cada categoría
@@ -54,12 +58,20 @@ private:
 
     Sprite* puntosSprite;
 
+    Sprite* feedback;
+
+    std::pair<std::string, int> actualQuestion; //primero categoria, segundo número de pregunta
+
+    // Funciones para inicializar teclado y manejar sus eventos
+    void inicializarTeclado(void);
+    void presionarTecla(EventKeyboard::KeyCode key, Event* event);
+
     //Funciones callback
     void GoBack(Ref* pSender);
     void spinR( Ref* sender, ui::Widget::TouchEventType type);
-    
-    void addSprite();
-    void addSpriteBad();
+    void correctAnswerCallback(Ref* sender);
+    void wrongAnswerCallback(Ref* sender);
+    void showQuestion(Ref*);
 
 };
 

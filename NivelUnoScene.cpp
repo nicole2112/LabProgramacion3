@@ -40,6 +40,9 @@ bool NivelUnoScene::init()
     visibleSize = Director::getInstance()->getVisibleSize();
     Point origin = Director::getInstance()->getVisibleOrigin();
 
+    auto bg = cocos2d::LayerColor::create(Color4B(30, 144, 255, 255));
+    this->addChild(bg, -2);
+
     //Título
     auto titulo = Sprite::create("images/tituloRuleta.png");
     if (titulo != nullptr) {
@@ -48,11 +51,11 @@ bool NivelUnoScene::init()
     }
 
     //Instrucciones
-    auto instrucciones = Label::createWithTTF("Gire la ruleta \ny conteste la pregunta.", "fonts/Marker Felt.ttf", 14);
+    auto instrucciones = Label::createWithTTF("Gire la ruleta, clickee Enter para \nvisualizar la pregunta y luego\nseleccione una opcion.", "fonts/Marker Felt.ttf", 11);
     if (instrucciones != nullptr) {
         instrucciones->setColor(Color3B::WHITE);
         // position the label on the center of the screen
-        instrucciones->setPosition(Vec2(origin.x + 100, origin.y + visibleSize.height / 2 + 60));
+        instrucciones->setPosition(Vec2(origin.x + 90, origin.y + visibleSize.height / 2 + 85));
 
         // add the label as a child to this layer
         this->addChild(instrucciones, 1);
@@ -61,7 +64,7 @@ bool NivelUnoScene::init()
     //Cuadro de categorías
     auto categorias = Sprite::create("Images/categorias.png");
     if (categorias != nullptr) {
-        categorias->setPosition(Vec2(origin.x + visibleSize.width / 4 - 30, origin.y + visibleSize.height / 3));
+        categorias->setPosition(Vec2(origin.x + visibleSize.width / 4 - 30, origin.y + visibleSize.height / 3 + 50));
         this->addChild(categorias, 1);
     }
 
@@ -70,11 +73,8 @@ bool NivelUnoScene::init()
     ui::Button* botonS = ui::Button::create("images/button1.png", "images/button2.png");
     botonS->setPosition(Vec2(visibleSize.width / 2 + origin.x, (visibleSize.height / 5 + origin.y) - 20));
 
-    //Menú ítem de regresar a mapa
-    auto menuItem1 = MenuItemFont::create("GoBack", CC_CALLBACK_1(NivelUnoScene::GoBack, this));
-    menuItem1->setPosition(Point(visibleSize.width / 5, (visibleSize.height / 5) - 25));
-    auto mapa = Menu::create(menuItem1, NULL);
-    mapa->setPosition(Point(0, 0));
+    //Añadirle evento al botón que hace girar la ruleta 
+    botonS->addTouchEventListener(CC_CALLBACK_2(NivelUnoScene::spinR, this));
 
     //Creación del sprite de la ruleta y posicionarla
     Ruleta = Sprite::create("images/ruleta.png");
@@ -82,11 +82,7 @@ bool NivelUnoScene::init()
 
     //Añadir botones y ruleta a la escena
     this->addChild(Ruleta, 1);
-    this->addChild(mapa, 1);
     this->addChild(botonS, 2);
-
-    //Añadirle evento al botón que hace girar la ruleta 
-    botonS->addTouchEventListener(CC_CALLBACK_2(NivelUnoScene::spinR, this));
 
     //Agregar la categoría actual
     actualCategory = Sprite::create("images/empty.png");
@@ -96,11 +92,11 @@ bool NivelUnoScene::init()
     }
 
     //Se crea el label donde sale la pregunta
-    pregunta = Label::createWithTTF("", "fonts/Marker Felt.ttf", 18);
+    pregunta = Label::createWithTTF("", "fonts/Marker Felt.ttf", 14);
     if (pregunta != nullptr) {
         pregunta->setColor(Color3B::WHITE);
         // Pone el Label a la derecha de la pantalla
-        pregunta->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 175, origin.y + (visibleSize.height / 2) + 120));
+        pregunta->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 165, origin.y + (visibleSize.height / 2) + 75));
 
         // Añade el child al layer
         this->addChild(pregunta, 1);
@@ -113,62 +109,28 @@ bool NivelUnoScene::init()
         this->addChild(puntosSprite, 1);
     }
 
+    //se crea el sprite que da feedback a respuesta correcta o incorrecta
+    feedback = Sprite::create("images/empty.png");
+    if (feedback != nullptr) {
+        feedback->setPosition(Vec2(origin.x + 125, visibleSize.height / 2 - 100));
+        this->addChild(feedback, 1);
+    }
+
     //Agrega los botones de opciones
+    item1 = MenuItemFont::create("Opcion 1", CC_CALLBACK_1(NivelUnoScene::correctAnswerCallback, this));
+    item2 = MenuItemFont::create("Opcion 2", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
+    item3 = MenuItemFont::create("Opcion 3", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
+    item4 = MenuItemFont::create("Opcion 4", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
 
-    opcion1 = ui::Button::create("images/CloseNormal2.png", "images/CloseSelected2.png");
-    opcion1->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSprite();
-                break;
-            case cocos2d::ui::Widget::TouchEventType::CANCELED:
-                break;
-            default:
-                break;
-            }
-        });
-    this->addChild(opcion1);
-    opcion1->setVisible(false);
+    item1->setFontSizeObj(14);
+    item2->setFontSizeObj(14);
+    item3->setFontSizeObj(14);
+    item4->setFontSizeObj(14);
 
-    opcion2 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSpriteBad();
-                break;
-            }
-        });
-    this->addChild(opcion2, 2);
-    opcion2->setVisible(false);
-
-    opcion3 = ui::Button::create("images/CloseNormal.png", "images/CloseSelected.png");
-    opcion3->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type)
-        {
-            switch (type)
-            {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::MOVED:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                addSpriteBad();
-                break;
-            }
-        });
-    this->addChild(opcion3, 2);
-    opcion3->setVisible(false);
+    mapad = Menu::create(item1, item2, item3, item4, NULL);
+    mapad->setPosition(Point(0, 0));
+    mapad->setVisible(false);
+    this->addChild(mapad, 1);
 
     this->puntuacion = 0;
     //Se inicializa label de puntuación
@@ -182,13 +144,46 @@ bool NivelUnoScene::init()
         this->addChild(puntuacionLabel, 1);
     }
 
+    //para eventos del teclado
+    inicializarTeclado();
+
     return true;
+}
+
+//Inicializa los eventos del teclado
+void NivelUnoScene::inicializarTeclado() {
+    // Crear el escuchador de eventos de teclado
+    auto escuchador = EventListenerKeyboard::create();
+
+    escuchador->onKeyPressed = [](EventKeyboard::KeyCode, Event* event) {return true; };
+    escuchador->onKeyReleased = CC_CALLBACK_2(NivelUnoScene::presionarTecla, this);
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(escuchador, this);
+}
+
+//Función que maneja lo que sucederá al presionar una tecla
+void NivelUnoScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
+
+    switch (key) { //Dependiendo de la tecla que se presione suceden distintos casos
+
+    case EventKeyboard::KeyCode::KEY_ESCAPE: //Si se presiona la tecla Esc, se llaman la función Callback respectiva
+        NivelUnoScene::GoBack(this);
+        break;
+    case EventKeyboard::KeyCode::KEY_ENTER:
+        NivelUnoScene::showQuestion(this);
+        break;
+    }
 }
 
 //Callback de regresar al mapa
 void NivelUnoScene::GoBack(cocos2d::Ref* pSender) {
     auto scene = MapScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
+}
+
+void NivelUnoScene::showQuestion(Ref* sender) {
+    selectCategory();
+
 }
 
 //Callback para girar la ruleta
@@ -200,9 +195,6 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
     auto rotacion2 = RotateBy::create(2, 50);
     int r1 = 0;
     int r2 = 0;
-    DelayTime* delayt;
-    Sequence* sequence;
-    delayt = DelayTime::create(4);
 
     switch (type)
     {
@@ -222,11 +214,11 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
         log("Se roto");
         Ruleta->runAction(rotacion2);
 
+        actualCategory->setTexture("Images/empty.png");
         puntosSprite->setTexture("images/empty.png");
         pregunta->setString("");
-        opcion1->setVisible(false);
-        opcion2->setVisible(false);
-        opcion3->setVisible(false);
+        feedback->setTexture("Images/empty.png");
+        mapad->setVisible(false);
 
         break;
 
@@ -235,12 +227,7 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
         break;
 
     case cocos2d::ui::Widget::TouchEventType::ENDED:
-
         log("Touch ended");
-
-
-        selectCategory();
-
         break;
 
     case cocos2d::ui::Widget::TouchEventType::CANCELED:
@@ -288,9 +275,7 @@ void NivelUnoScene::selectCategory() {
         log("Historia");
     }
 
-    opcion1->setVisible(true);
-    opcion2->setVisible(true);
-    opcion3->setVisible(true);
+    mapad->setVisible(true);
 
 }
 
@@ -299,7 +284,7 @@ void NivelUnoScene::selectCategory() {
 //Revisa si ya existe la posición de las opciones en el arreglo de posiciones
 bool NivelUnoScene::checkrep(int n, int num[])
 {
-    for (int i = 0; i <= 2; i++)
+    for (int i = 0; i < 4; i++)
         if (n == num[i])
             return true;
     return false;
@@ -309,39 +294,77 @@ void NivelUnoScene::arte()
 { 
 
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
-    Questions[0][0] = "Pregunta 1";
-    Questions[1][0] = "Pregunta 2";
-    Questions[2][0] = "Pregunta 3";
-    for (int i = 0; i < 3; i++)
+    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
+    Questions[0][0] = "Encargado de pintar \nla capilla Sixtina:";
+    Questions[1][0] = "Genio del renacimiento que \nesculpio el Moises, el \nDavid y la Pieta:";
+    Questions[2][0] = "Estilo artistico que impregno\n el arte, filosofia, pintura \ny escritura, durante \nel renacimiento:";
+    Questions[3][0] = "Vision del hombre reflejada \nen el arte, la politica y las \nciencias durante el \nrenamiciento:";
+    Questions[4][0] = "4 genios del renacimiento \nllevados a la pantalla en los \ncomics de:";
+    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
-        for (int j = 1; j < 4; j++)
-        {
-            Questions[i][j] = "Opcion " + j;
+        
+        if (i == 0) { 
+            Questions[i][1] = "Miguel Angel";
+            Questions[i][2] = "Donatello";
+            Questions[i][3] = "Leonardo Da Vinci";
+            Questions[i][4] = "Francis Bacon";
         }
+        else if (i == 1) {
+            Questions[i][1] = "Miguel Angel";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Leonardo Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 2) { //falta modificar desde aca
+            Questions[i][1] = "El barroco";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Leonardo Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 3) {
+            Questions[i][1] = "Humanismo";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 4) {
+            Questions[i][1] = "Las tortujas ninjas";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 3);
-    pregunta->setString("Arte\n" + Questions[random][0]);
+    int random = (rand() % 5);
+    pregunta->setString(Questions[random][0]);
+
+    this->actualQuestion = make_pair("arte", random);
+
+    item1->setString(Questions[random][1]);
+    item2->setString(Questions[random][2]);
+    item3->setString(Questions[random][3]);
+    item4->setString(Questions[random][4]);
 
     //Para que las posiciones de los botones sean de manera aleatoria
-    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
-    int pos;//guardará número random entre 0 y 2
-    for (int i = 0; i <= 2; i++) 
+    int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
+    int pos;//guardará número random entre 0 y 3
+    for (int i = 0; i < 4; i++) 
     {
         do {
-            pos = rand() % 3;
+            pos = rand() % 4;
         } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
 
         posiciones[i] = pos;     
     }
-       
-    //Colocar las posiciones de cada botón
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40*posiciones[0])) - 20));
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
 
+    //Colocar las posiciones de cada botón
+    item1->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2  + (20 * posiciones[0])) - 25));
+    item2->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[1])) - 25 ));
+    item3->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[2])) - 25));
+    item4->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[3])) - 25));
+       
 }
 
 //CIENCIA
@@ -349,128 +372,251 @@ void NivelUnoScene::ciencia()
 {
     
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
     Questions[1][0] = "Pregunta 2";
     Questions[2][0] = "Pregunta 3";
-    for (int i = 0; i < 3; i++)
+    Questions[3][0] = "Pregunta 4";
+    Questions[4][0] = "Pregunta 5";
+    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
-        for (int j = 1; j < 4; j++)
-        {
-            Questions[i][j] = "Opcion " + j;
+
+        if (i == 0) {
+            Questions[i][1] = "Galileo";
+            Questions[i][2] = "Donatello";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Francis Bacon";
         }
+        else if (i == 1) {
+            Questions[i][1] = "Nicolas Maquiavelo";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 2) { 
+            Questions[i][1] = "Rene Descartes";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 3) {
+            Questions[i][1] = "Copernico";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 4) {
+            Questions[i][1] = "La imprenta";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 3);
+    int random = (rand() % 5);
     pregunta->setString("Ciencia\n" + Questions[random][0]);
 
+    this->actualQuestion = make_pair("ciencia", random);
+
+    item1->setString(Questions[random][1]);
+    item2->setString(Questions[random][2]);
+    item3->setString(Questions[random][3]);
+    item4->setString(Questions[random][4]);
+
     //Para que las posiciones de los botones sean de manera aleatoria
-    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
     int pos;//guardará número random entre 0 y 2
-    for (int i = 0; i <= 2; i++)
+    for (int i = 0; i < 4; i++)
     {
         do {
-            pos = rand() % 3;
+            pos = rand() % 4;
         } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
 
         posiciones[i] = pos;
     }
 
     //Colocar las posiciones de cada botón
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
+    item1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[0])) - 20));
+    item2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[1])) - 20));
+    item3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[2])) - 20));
+    item4->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[3])) - 20));
 }
 
 //POLÍTICA
 void NivelUnoScene::politica() 
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
     Questions[1][0] = "Pregunta 2";
     Questions[2][0] = "Pregunta 3";
-    for (int i = 0; i < 3; i++)
+    Questions[3][0] = "Pregunta 4";
+    Questions[4][0] = "Pregunta 5";
+    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
-        for (int j = 1; j < 4; j++)
-        {
-            Questions[i][j] = "Opcion " + j;
+
+        if (i == 0) {
+            Questions[i][1] = "Galileo";
+            Questions[i][2] = "Donatello";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Francis Bacon";
         }
+        else if (i == 1) {
+            Questions[i][1] = "Nicolas Maquiavelo";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 2) {
+            Questions[i][1] = "Rene Descartes";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 3) {
+            Questions[i][1] = "Copernico";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 4) {
+            Questions[i][1] = "La imprenta";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 3);
+    int random = (rand() % 5);
     pregunta->setString("Politica\n" + Questions[random][0]);
 
+    this->actualQuestion = make_pair("politica", random);
+
+    item1->setString(Questions[random][1]);
+    item2->setString(Questions[random][2]);
+    item3->setString(Questions[random][3]);
+    item4->setString(Questions[random][4]);
+
     //Para que las posiciones de los botones sean de manera aleatoria
-    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
     int pos;//guardará número random entre 0 y 2
-    for (int i = 0; i <= 2; i++)
+    for (int i = 0; i < 4; i++)
     {
         do {
-            pos = rand() % 3;
+            pos = rand() % 4;
         } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
 
         posiciones[i] = pos;
     }
 
     //Colocar las posiciones de cada botón
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
+    item1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[0])) - 20));
+    item2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[1])) - 20));
+    item3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[2])) - 20));
+    item4->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[3])) - 20));
 }
 
 //HISTORIA
 void NivelUnoScene::historia()
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[3][4];//Prototipo: 3 preguntas, 3 respuestas por pregunta
+    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
     Questions[0][0] = "Pregunta 1";
     Questions[1][0] = "Pregunta 2";
     Questions[2][0] = "Pregunta 3";
-    for (int i = 0; i < 3; i++)
+    Questions[3][0] = "Pregunta 4";
+    Questions[4][0] = "Pregunta 5";
+    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
-        for (int j = 1; j < 4; j++)
-        {
-            Questions[i][j] = "Opcion " + j;
+
+        if (i == 0) {
+            Questions[i][1] = "Galileo";
+            Questions[i][2] = "Donatello";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Francis Bacon";
         }
+        else if (i == 1) {
+            Questions[i][1] = "Nicolas Maquiavelo";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 2) {
+            Questions[i][1] = "Rene Descartes";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 3) {
+            Questions[i][1] = "Copernico";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+        else if (i == 4) {
+            Questions[i][1] = "La imprenta";
+            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][3] = "Da Vinci";
+            Questions[i][4] = "Galileo Galilei";
+        }
+
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 3);
+    int random = (rand() % 5);
     pregunta->setString("Historia\n" + Questions[random][0]);
+
+    this->actualQuestion = make_pair("historia", random);
   
+    item1->setString(Questions[random][1]);
+    item2->setString(Questions[random][2]);
+    item3->setString(Questions[random][3]);
+    item4->setString(Questions[random][4]);
+
     //Para que las posiciones de los botones sean de manera aleatoria
-    int posiciones[3]; //arreglo que contiene las posiciones ya obtenidas
+    int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
     int pos;//guardará número random entre 0 y 2
-    for (int i = 0; i <= 2; i++)
+    for (int i = 0; i < 4; i++)
     {
         do {
-            pos = rand() % 3;
+            pos = rand() % 4;
         } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
 
         posiciones[i] = pos;
     }
 
     //Colocar las posiciones de cada botón
-    opcion1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[0])) - 20));
-    opcion2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[1])) - 20));
-    opcion3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (40 * posiciones[2])) - 20));
+    item1->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[0])) - 20));
+    item2->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[1])) - 20));
+    item3->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[2])) - 20));
+    item4->setPosition(Vec2(visibleSize.width / 2 + 175, (visibleSize.height / 2 + 10 + (20 * posiciones[3])) - 20));
 }
 
 //Ambos metodos agregan los sprites de los puntajes
 
-void NivelUnoScene::addSprite()
+void NivelUnoScene::correctAnswerCallback(Ref* sender) 
 {
     puntosSprite->setTexture("images/+100puntos.png");
     this->puntuacion += 100;
     puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
+
+    if(this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
+        feedback->setTexture("images/arte1Correcta.png");
 }
 
-void NivelUnoScene::addSpriteBad()
+void NivelUnoScene::wrongAnswerCallback(Ref* sender)
 {
     puntosSprite->setTexture("images/-50puntos.png");
     this->puntuacion -= 50;
     puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
+
+    if (this->actualQuestion.first == "arte" || this->actualQuestion.first == "historia")
+        feedback->setTexture("images/cheers1.png");
+
+    else if (this->actualQuestion.first == "politica" || this->actualQuestion.first == "ciencia")
+        feedback->setTexture("images/cheers2.png");
 }
