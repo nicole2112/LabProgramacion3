@@ -291,7 +291,7 @@ bool NivelUnoScene::checkrep(int n, int num[])
 }
 //ARTE
 void NivelUnoScene::arte()
-{ 
+{
 
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
@@ -302,38 +302,38 @@ void NivelUnoScene::arte()
     Questions[4][0] = "4 genios del renacimiento \nllevados a la pantalla en los \ncomics de:";
     for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
-        
-        if (i == 0) { 
+
+        if (i == 0) {
             Questions[i][1] = "Miguel Angel";
             Questions[i][2] = "Donatello";
             Questions[i][3] = "Leonardo Da Vinci";
             Questions[i][4] = "Francis Bacon";
         }
         else if (i == 1) {
-            Questions[i][1] = "Miguel Angel";
+            Questions[i][1] = "Miguel Angel Buenarrotti";
             Questions[i][2] = "Rafael Sanzio";
             Questions[i][3] = "Leonardo Da Vinci";
             Questions[i][4] = "Galileo Galilei";
         }
         else if (i == 2) { //falta modificar desde aca
-            Questions[i][1] = "El barroco";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Leonardo Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "El Barroco";
+            Questions[i][2] = "El Gotico";
+            Questions[i][3] = "El Clascismo";
+            Questions[i][4] = "Romanticismo";
         }
         else if (i == 3) {
             Questions[i][1] = "Humanismo";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][2] = "Antropocentrismo";
+            Questions[i][3] = "Paradigma Antropologico";
+            Questions[i][4] = "Teocentrismo";
         }
         else if (i == 4) {
-            Questions[i][1] = "Las tortujas ninjas";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Las Tortugas Ninjas";
+            Questions[i][2] = "Los Caballeros del Zodiaco";
+            Questions[i][3] = "Los Cuatro Fantasticos";
+            Questions[i][4] = "Enemigos en Attack Titan";
         }
-        
+
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
@@ -350,66 +350,66 @@ void NivelUnoScene::arte()
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
     int pos;//guardará número random entre 0 y 3
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
     {
         do {
             pos = rand() % 4;
         } while (checkrep(pos, posiciones)); //revisa si ya existe la posición en el arreglo
 
-        posiciones[i] = pos;     
+        posiciones[i] = pos;
     }
 
     //Colocar las posiciones de cada botón
-    item1->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2  + (20 * posiciones[0])) - 25));
-    item2->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[1])) - 25 ));
+    item1->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[0])) - 25));
+    item2->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[1])) - 25));
     item3->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[2])) - 25));
     item4->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[3])) - 25));
-       
+
 }
 
 //CIENCIA
-void NivelUnoScene::ciencia() 
+void NivelUnoScene::ciencia()
 {
-    
+
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Pregunta 1";
-    Questions[1][0] = "Pregunta 2";
-    Questions[2][0] = "Pregunta 3";
-    Questions[3][0] = "Pregunta 4";
-    Questions[4][0] = "Pregunta 5";
+    Questions[0][0] = "Uno de los precursores filósofo-científico del heliocentrismo: ";
+    Questions[1][0] = "Entre los siguientes uno de los mencionados no es precursor del método científico: ";
+    Questions[2][0] = "Es uno de los precursores del pensamiento Moderno: ";
+    Questions[3][0] = "De los siguientes filósofos niega el geocentrismo: ";
+    Questions[4][0] = "Uno de los inventos que suscitó un conocimiento ilimitado, fue el de Gutenberg: ";
     for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
 
         if (i == 0) {
             Questions[i][1] = "Galileo";
-            Questions[i][2] = "Donatello";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Francis Bacon";
+            Questions[i][2] = "TomasMoro";
+            Questions[i][3] = "Platon";
+            Questions[i][4] = "Ptolomeo";
         }
         else if (i == 1) {
             Questions[i][1] = "Nicolas Maquiavelo";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
+            Questions[i][2] = "Francis Bacon";
+            Questions[i][3] = "Rene Descartes";
             Questions[i][4] = "Galileo Galilei";
         }
-        else if (i == 2) { 
+        else if (i == 2) {
             Questions[i][1] = "Rene Descartes";
-            Questions[i][2] = "Rafael Sanzio";
+            Questions[i][2] = "Isaac Newton";
             Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][4] = "Erasmo de Roterdam";
         }
         else if (i == 3) {
             Questions[i][1] = "Copernico";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][2] = "Tomas de Aquino";
+            Questions[i][3] = "Aristoteles";
+            Questions[i][4] = "Platon";
         }
         else if (i == 4) {
             Questions[i][1] = "La imprenta";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][2] = "El Astrolabio";
+            Questions[i][3] = "La Nao y la Carabela";
+            Questions[i][4] = "El Telescopio";
         }
 
     }
@@ -445,47 +445,47 @@ void NivelUnoScene::ciencia()
 }
 
 //POLÍTICA
-void NivelUnoScene::politica() 
+void NivelUnoScene::politica()
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Pregunta 1";
-    Questions[1][0] = "Pregunta 2";
-    Questions[2][0] = "Pregunta 3";
-    Questions[3][0] = "Pregunta 4";
-    Questions[4][0] = "Pregunta 5";
+    Questions[0][0] = "Durante el renacimiento, el modelo de gobierno es uno de los siguientes: ";
+    Questions[1][0] = "De los siguientes acontecimientos, selecciones el que inicia el período moderno: ";
+    Questions[2][0] = "Durante el siglo XV, la sociedad se estratifica en tres estamentos definidos: ";
+    Questions[3][0] = "Aparece el realismo político, que se basaba en un orden establecido, \nexplicación de un sistema y recomendaciones de como gobernar : ";
+    Questions[4][0] = "Terminada la edad media, en el contexto de la política resulta que: ";
     for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
 
         if (i == 0) {
-            Questions[i][1] = "Galileo";
-            Questions[i][2] = "Donatello";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Francis Bacon";
+            Questions[i][1] = "Monarquia Absoluta";
+            Questions[i][2] = "Tirania Republicana";
+            Questions[i][3] = "Democracia Participativa";
+            Questions[i][4] = "Liberalismo Politico";
         }
         else if (i == 1) {
-            Questions[i][1] = "Nicolas Maquiavelo";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Tratado de paz de westfalia";
+            Questions[i][2] = "Toma de Constantinopla";
+            Questions[i][3] = "Toma de la Bastilla";
+            Questions[i][4] = "La ruta de la seda";
         }
         else if (i == 2) {
-            Questions[i][1] = "Rene Descartes";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Nobleza, clero y estado llano";
+            Questions[i][2] = "Clase Media, baja y alta";
+            Questions[i][3] = "Artesanos, guardianes y gobernantes";
+            Questions[i][4] = "Presidente, Ministro y estado";
         }
         else if (i == 3) {
-            Questions[i][1] = "Copernico";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Nicolas Maquiavelo";
+            Questions[i][2] = "Tomas Moro";
+            Questions[i][3] = "Jean Bodin";
+            Questions[i][4] = "Erasmo de Rotterdam";
         }
         else if (i == 4) {
-            Questions[i][1] = "La imprenta";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "La Iglesia pierde el papel rector";
+            Questions[i][2] = "La Iglesia resalta su poder";
+            Questions[i][3] = "La Iglesia evangelica entra en politica";
+            Questions[i][4] = "No ocurrio nada";
         }
 
     }
@@ -525,43 +525,43 @@ void NivelUnoScene::historia()
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
     string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Pregunta 1";
-    Questions[1][0] = "Pregunta 2";
-    Questions[2][0] = "Pregunta 3";
-    Questions[3][0] = "Pregunta 4";
-    Questions[4][0] = "Pregunta 5";
+    Questions[0][0] = "Despues del feudalismo medieval surge esta nueva clase social: ";
+    Questions[1][0] = "Monarquia europea centralizada que nace en el renacimiento: ";
+    Questions[2][0] = "Previo a la consolidación del estado moderno, Italia estuvo divida \nen ciudades-estado normalmente enfrentadas entre si, como es el caso de : ";
+    Questions[3][0] = "La toma de Constantinopla supone un bloqueo comercial entre Europa y Asia \n(la ruta de la seda) y ocurrió en lo que hoy es actualmente : ";
+    Questions[4][0] = "Resurge el interés por Grecia y Roma, junto al declive del sistema feudal, \nel crecimiento del comercio e innovaciones entre las que mencionamos : ";
     for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
     {
 
         if (i == 0) {
-            Questions[i][1] = "Galileo";
-            Questions[i][2] = "Donatello";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Francis Bacon";
+            Questions[i][1] = "La burguesia";
+            Questions[i][2] = "La monarquia";
+            Questions[i][3] = "El mercantilismo";
+            Questions[i][4] = "El proletariado";
         }
         else if (i == 1) {
-            Questions[i][1] = "Nicolas Maquiavelo";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Inglaterra";
+            Questions[i][2] = "Grecia";
+            Questions[i][3] = "Yugoslavia";
+            Questions[i][4] = "Egipto";
         }
         else if (i == 2) {
-            Questions[i][1] = "Rene Descartes";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Florencia-Napoli";
+            Questions[i][2] = "Amsterdam-Cracovia";
+            Questions[i][3] = "Reims-Colonia";
+            Questions[i][4] = "Milan-Lourdes";
         }
         else if (i == 3) {
-            Questions[i][1] = "Copernico";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "Estambul en Turquia";
+            Questions[i][2] = "Mesopotamia";
+            Questions[i][3] = "Eslovaquia";
+            Questions[i][4] = "China";
         }
         else if (i == 4) {
-            Questions[i][1] = "La imprenta";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "La imprenta y la brujula";
+            Questions[i][2] = "La rueda y la escritura";
+            Questions[i][3] = "Las maquinas a vapor";
+            Questions[i][4] = "Las maquinas de produccion en masa";
         }
 
     }
@@ -571,7 +571,7 @@ void NivelUnoScene::historia()
     pregunta->setString("Historia\n" + Questions[random][0]);
 
     this->actualQuestion = make_pair("historia", random);
-  
+
     item1->setString(Questions[random][1]);
     item2->setString(Questions[random][2]);
     item3->setString(Questions[random][3]);
@@ -598,13 +598,13 @@ void NivelUnoScene::historia()
 
 //Ambos metodos agregan los sprites de los puntajes
 
-void NivelUnoScene::correctAnswerCallback(Ref* sender) 
+void NivelUnoScene::correctAnswerCallback(Ref* sender)
 {
     puntosSprite->setTexture("images/+100puntos.png");
     this->puntuacion += 100;
     puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 
-    if(this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
+    if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
         feedback->setTexture("images/arte1Correcta.png");
 }
 
