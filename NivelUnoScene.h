@@ -31,7 +31,7 @@ private:
     int puntuacion;
     Label* puntuacionLabel;
 
-    //Función para seleccionar la categoría en base a la ruleta
+    //FunciÃ³n para seleccionar la categorÃ­a en base a la ruleta
     void selectCategory();
     int angle, vueltas;
 
@@ -47,20 +47,33 @@ private:
 
     bool checkrep(int, int[]);
 
-    //Funciones para las preguntas de cada categoría
+    //-------------
+    bool checkpreg(int, int[]);
+    bool respuesta;
+    //Iteradores y arreglos que manejan preguntas
+    int iteradorA;
+    int iteradorH;
+    int iteradorP;
+    int iteradorC;
+    int A[5];
+    int H[5];
+    int P[5];
+    int C[5];
+    
+    //Funciones para las preguntas de cada categorÃ­a
     void arte();
     void historia();
     void politica();
     void ciencia();
 
-    //Sprite que contiene la imagen con el título respectivo a cada categoría
+    //Sprite que contiene la imagen con el tÃ­tulo respectivo a cada categorÃ­a
     Sprite* actualCategory;
 
     Sprite* puntosSprite;
 
     Sprite* feedback;
 
-    std::pair<std::string, int> actualQuestion; //primero categoria, segundo número de pregunta
+    std::pair<std::string, int> actualQuestion; //primero categoria, segundo nÃºmero de pregunta
 
     // Funciones para inicializar teclado y manejar sus eventos
     void inicializarTeclado(void);
