@@ -107,9 +107,14 @@ bool MapScene::init()
     }
 
     //Niveles Leonardo Pazzetti
+    //creacion de items
     menuItem1 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::Play, this));
     menuItem2 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::NivelDos, this));
     menuItem3 = MenuItemFont::create("X", CC_CALLBACK_1(MapScene::NivelTres, this));
+    auto menuItem4 = MenuItemImage::create("Images/tituloRuletaMap.png", "Images/tituloRuletaMap.png", CC_CALLBACK_1(MapScene::ImageButton, this));
+    auto menuItem5 = MenuItemImage::create("Images/x.png", "Images/x_roja.png", CC_CALLBACK_1(MapScene::ImageButton2, this));
+    auto menuItem6 = MenuItemImage::create("Images/x.png", "Images/x_roja.png", CC_CALLBACK_1(MapScene::ImageButton3, this));
+
 
     menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);
@@ -118,10 +123,13 @@ bool MapScene::init()
     //Posiciones de los niveles - David
     menuItem1->setPosition(Point(visibleSize.width / 3, (visibleSize.height / 4) * 3));
     menuItem2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
-    menuItem3->setPosition(Point(visibleSize.width / 1.5, (visibleSize.height / 4) * 3));
+    menuItem3->setPosition(Point(visibleSize.width / 1.5, (visibleSize.height / 4) * 3.5));
+    menuItem4->setPosition(Point(visibleSize.width / 3, (visibleSize.height / 4.5) * 3));
+   // menuItem5->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4) * 1));
+   // menuItem6->setPosition(Point(visibleSize.width / 1.5, (visibleSize.height / 4) * 3));
     //Se ajustan las posiciones de acuerdo al mapa
 
-    auto mapad = Menu::create(menuItem1, menuItem2, menuItem3, NULL);
+    auto mapad = Menu::create(menuItem1, menuItem2, menuItem3,menuItem4, NULL);
     mapad->setPosition(Point(0, 0));
     this->addChild(mapad, 1);
 
@@ -165,6 +173,29 @@ void MapScene::NivelTres(cocos2d::Ref* pSender)
     Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
 }
 
+void MapScene::ImageButton(cocos2d::Ref* pSender)
+{
+    CCLOG("ImageButton");
+    //create scene
+    auto scene = NivelUnoScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+}
+
+void MapScene::ImageButton2(cocos2d::Ref* pSender)
+{
+    CCLOG("ImageButton2");
+    //create scene
+    auto scene = NivelDosScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+}
+
+void MapScene::ImageButton3(cocos2d::Ref* pSender)
+{
+    CCLOG("ImageButton3");
+    //create scene
+    auto scene = NivelTresScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
+}
 
 void MapScene::regresarCloseCallback(Ref* pSender)
 {
@@ -181,3 +212,4 @@ static void problemLoading(const char* filename)
     printf("Error while loading: %s\n", filename);
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
+
