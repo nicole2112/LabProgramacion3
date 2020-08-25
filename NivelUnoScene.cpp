@@ -147,6 +147,13 @@ bool NivelUnoScene::init()
     //para eventos del teclado
     inicializarTeclado();
 
+    //-------------------------
+    //LOS ITERADORES SE INICIAN EN 0
+    this->iteradorA = 0;
+    this->iteradorH = 0;
+    this->iteradorP = 0;
+    this->iteradorC = 0;
+    
     return true;
 }
 
@@ -241,7 +248,12 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
 }
 
 //Función que selecciona la categoría en base al ángulo de la rueda
-void NivelUnoScene::selectCategory() {
+void NivelUnoScene::selectCategory() 
+{
+    //---------------------------
+    //LA VARIABLE SE RESETA CADA VEZ QUE SE GIRA EL TIMON
+    respuesta = true;
+    
     vueltas = Ruleta->getRotation() / 360;
     this->angle = Ruleta->getRotation() - (360 * vueltas);
 
@@ -289,6 +301,16 @@ bool NivelUnoScene::checkrep(int n, int num[])
             return true;
     return false;
 }
+
+//-------------
+bool NivelUnoScene::checkpreg(int n, int num[]) 
+{
+    for (int i = 0; i < 5; i++)
+        if (n == num[i])
+            return true;
+    return false;
+}
+
 //ARTE
 void NivelUnoScene::arte()
 {
@@ -337,7 +359,26 @@ void NivelUnoScene::arte()
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 5);
+    //---------------
+    //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
+    if (iteradorA >= 5 || A[4] != -1)
+    {
+        for (int i = 0; i < 5; i++) 
+        {
+            A[i] = -1;
+            iteradorA = 0;
+        }
+    }
+
+    //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
+    int random = 0;
+    do 
+    {
+        random = (rand() % 5);
+    } while (checkpreg(random, A));
+    A[iteradorA] = random;
+    iteradorA++;
+    
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("arte", random);
@@ -415,7 +456,26 @@ void NivelUnoScene::ciencia()
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 5);
+    //---------------
+    //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
+    if (iteradorC >= 5 || C[4] != -1)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            C[i] = -1;
+            iteradorC = 0;
+        }
+    }
+
+    //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
+    int random = 0;
+    do
+    {
+        random = (rand() % 5);
+    } while (checkpreg(random, C));
+    C[iteradorC] = random;
+    iteradorC++;
+    
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("ciencia", random);
@@ -491,7 +551,26 @@ void NivelUnoScene::politica()
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 5);
+    //---------------
+    //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
+    if (iteradorP >= 5 || P[4] != -1)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            P[i] = -1;
+            iteradorP = 0;
+        }
+    }
+
+    //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
+    int random = 0;
+    do
+    {
+        random = (rand() % 5);
+    } while (checkpreg(random, P));
+    P[iteradorP] = random;
+    iteradorP++;
+
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("politica", random);
@@ -567,7 +646,26 @@ void NivelUnoScene::historia()
     }
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
-    int random = (rand() % 5);
+    //---------------
+    //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
+    if (iteradorH >= 5 || H[4] != -1)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            H[i] = -1;
+            iteradorH = 0;
+        }
+    }
+
+    //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
+    int random = 0;
+    do
+    {
+        random = (rand() % 5);
+    } while (checkpreg(random, H));
+    H[iteradorH] = random;
+    iteradorH++;
+
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("historia", random);
@@ -600,23 +698,33 @@ void NivelUnoScene::historia()
 
 void NivelUnoScene::correctAnswerCallback(Ref* sender)
 {
-    puntosSprite->setTexture("images/+100puntos.png");
-    this->puntuacion += 100;
-    puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
+    //IF QUE SE ASEGURA QUE AUN NO SE HAYA PRESIONADO NINGUNA OTRA RESPUESTA
+    if (respuesta==true) 
+    {
+        respuesta = false;
+        puntosSprite->setTexture("images/+100puntos.png");
+        this->puntuacion += 100;
+        puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 
-    if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
-        feedback->setTexture("images/arte1Correcta.png");
+        if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
+            feedback->setTexture("images/arte1Correcta.png");
+    }
 }
 
 void NivelUnoScene::wrongAnswerCallback(Ref* sender)
 {
-    puntosSprite->setTexture("images/-50puntos.png");
-    this->puntuacion -= 50;
-    puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
+    //IF QUE SE ASEGURA QUE AUN NO SE HAYA PRESIONADO NINGUNA OTRA RESPUESTA
+    if (respuesta == true) 
+    {
+        respuesta = false;
+        puntosSprite->setTexture("images/-50puntos.png");
+        this->puntuacion -= 50;
+        puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 
-    if (this->actualQuestion.first == "arte" || this->actualQuestion.first == "historia")
-        feedback->setTexture("images/cheers1.png");
+        if (this->actualQuestion.first == "arte" || this->actualQuestion.first == "historia")
+            feedback->setTexture("images/cheers1.png");
 
-    else if (this->actualQuestion.first == "politica" || this->actualQuestion.first == "ciencia")
-        feedback->setTexture("images/cheers2.png");
+        else if (this->actualQuestion.first == "politica" || this->actualQuestion.first == "ciencia")
+            feedback->setTexture("images/cheers2.png");
+    }
 }
