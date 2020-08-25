@@ -46,7 +46,7 @@ private:
     Menu* mapad;
 
     bool checkrep(int, int[]);
-
+    bool questionShown;
     //-------------
     bool checkpreg(int, int[]);
     bool respuesta;

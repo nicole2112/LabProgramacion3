@@ -112,7 +112,7 @@ bool NivelUnoScene::init()
     //se crea el sprite que da feedback a respuesta correcta o incorrecta
     feedback = Sprite::create("images/empty.png");
     if (feedback != nullptr) {
-        feedback->setPosition(Vec2(origin.x + 125, visibleSize.height / 2 - 100));
+        feedback->setPosition(Vec2(origin.x + 130, visibleSize.height / 2 - 100));
         this->addChild(feedback, 1);
     }
 
@@ -153,6 +153,10 @@ bool NivelUnoScene::init()
     this->iteradorH = 0;
     this->iteradorP = 0;
     this->iteradorC = 0;
+
+    this->respuesta = false;
+
+    this->questionShown = false;
     
     return true;
 }
@@ -189,8 +193,11 @@ void NivelUnoScene::GoBack(cocos2d::Ref* pSender) {
 }
 
 void NivelUnoScene::showQuestion(Ref* sender) {
-    selectCategory();
-
+    if (respuesta && questionShown) { //para que no sigan mostrando preguntas de la misma categoría en caso no 
+                                        //se haya contestado o no se haya mostrado pregunta
+        selectCategory();
+        questionShown = false;
+    }
 }
 
 //Callback para girar la ruleta
@@ -203,56 +210,61 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
     int r1 = 0;
     int r2 = 0;
 
-    switch (type)
-    {
-    case cocos2d::ui::Widget::TouchEventType::BEGAN:
-        log("boton pressed");
+    if (!respuesta) { //en caso de que ya esté contestada la pregunta, se puede realizar el giro de ruleta y demás
 
-        r1 = (rand() % 2160) + 2000;
-        log(r1);
+        switch (type)
+        {
+        case cocos2d::ui::Widget::TouchEventType::BEGAN:
+            log("boton pressed");
 
-        rotacion = RotateBy::create(2, r1);
-        Ruleta->runAction(rotacion);
+            r1 = (rand() % 2160) + 2000;
+            log(r1);
 
-        r2 = (rand() % 359) + 1;
-        cout << r2 << endl;
+            rotacion = RotateBy::create(2, r1);
+            Ruleta->runAction(rotacion);
 
-        rotacion2 = RotateBy::create(1, r2);
-        log("Se roto");
-        Ruleta->runAction(rotacion2);
+            r2 = (rand() % 359) + 1;
+            cout << r2 << endl;
 
-        actualCategory->setTexture("Images/empty.png");
-        puntosSprite->setTexture("images/empty.png");
-        pregunta->setString("");
-        feedback->setTexture("Images/empty.png");
-        mapad->setVisible(false);
+            rotacion2 = RotateBy::create(1, r2);
+            log("Se roto");
+            Ruleta->runAction(rotacion2);
 
-        break;
+            actualCategory->setTexture("Images/empty.png");
+            puntosSprite->setTexture("images/empty.png");
+            pregunta->setString("");
+            feedback->setTexture("Images/empty.png");
+            mapad->setVisible(false);
 
-    case cocos2d::ui::Widget::TouchEventType::MOVED:
-        log("touch moved ");
-        break;
+            //---------------------------
+            //LA VARIABLE SE RESETA CADA VEZ QUE SE GIRA EL TIMON
+            respuesta = true;
 
-    case cocos2d::ui::Widget::TouchEventType::ENDED:
-        log("Touch ended");
-        break;
+            questionShown = true;
 
-    case cocos2d::ui::Widget::TouchEventType::CANCELED:
-        log("touch Canceled");
-        break;
+            break;
 
-    default:
-        break;
+        case cocos2d::ui::Widget::TouchEventType::MOVED:
+            log("touch moved ");
+            break;
+
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+            log("Touch ended");
+            break;
+
+        case cocos2d::ui::Widget::TouchEventType::CANCELED:
+            log("touch Canceled");
+            break;
+
+        default:
+            break;
+        }
     }
-
 }
 
 //Función que selecciona la categoría en base al ángulo de la rueda
 void NivelUnoScene::selectCategory() 
 {
-    //---------------------------
-    //LA VARIABLE SE RESETA CADA VEZ QUE SE GIRA EL TIMON
-    respuesta = true;
     
     vueltas = Ruleta->getRotation() / 360;
     this->angle = Ruleta->getRotation() - (360 * vueltas);
@@ -326,34 +338,34 @@ void NivelUnoScene::arte()
     {
 
         if (i == 0) {
-            Questions[i][1] = "Miguel Angel";
-            Questions[i][2] = "Donatello";
-            Questions[i][3] = "Leonardo Da Vinci";
-            Questions[i][4] = "Francis Bacon";
+            Questions[i][1] = "-Miguel Angel";
+            Questions[i][2] = "-Donatello";
+            Questions[i][3] = "-Leonardo Da Vinci";
+            Questions[i][4] = "-Francis Bacon";
         }
         else if (i == 1) {
-            Questions[i][1] = "Miguel Angel";
-            Questions[i][2] = "Rafael Sanzio";
-            Questions[i][3] = "Leonardo Da Vinci";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "-Miguel Angel";
+            Questions[i][2] = "-Rafael Sanzio";
+            Questions[i][3] = "-Leonardo Da Vinci";
+            Questions[i][4] = "-Galileo Galilei";
         }
         else if (i == 2) { //falta modificar desde aca
-            Questions[i][1] = "El Barroco";
-            Questions[i][2] = "El Gotico";
-            Questions[i][3] = "El Clascismo";
-            Questions[i][4] = "Romanticismo";
+            Questions[i][1] = "-El Barroco";
+            Questions[i][2] = "-El Gotico";
+            Questions[i][3] = "-El Clasicismo";
+            Questions[i][4] = "-Romanticismo";
         }
         else if (i == 3) {
-            Questions[i][1] = "Humanismo";
-            Questions[i][2] = "Antropocentrismo";
-            Questions[i][3] = "Paradigma Antropologico";
-            Questions[i][4] = "Teocentrismo";
+            Questions[i][1] = "-Humanismo";
+            Questions[i][2] = "-Antropocentrismo";
+            Questions[i][3] = "-Paradigma Antropologico";
+            Questions[i][4] = "-Teocentrismo";
         }
         else if (i == 4) {
-            Questions[i][1] = "Las Tortugas Ninjas";
-            Questions[i][2] = "Los Caballeros del Zodiaco";
-            Questions[i][3] = "Los Cuatro Fantasticos";
-            Questions[i][4] = "Enemigos en Attack of Titan";
+            Questions[i][1] = "-Las Tortugas Ninjas";
+            Questions[i][2] = "-Los Caballeros del Zodiaco";
+            Questions[i][3] = "-Los Cuatro Fantasticos";
+            Questions[i][4] = "-Enemigos en Attack on Titan";
         }
 
     }
@@ -423,34 +435,34 @@ void NivelUnoScene::ciencia()
     {
 
         if (i == 0) {
-            Questions[i][1] = "Galileo";
-            Questions[i][2] = "Tomas Moro";
-            Questions[i][3] = "Platon";
-            Questions[i][4] = "Ptolomeo";
+            Questions[i][1] = "-Galileo Galilei";
+            Questions[i][2] = "-Tomas Moro";
+            Questions[i][3] = "-Platon";
+            Questions[i][4] = "-Ptolomeo";
         }
         else if (i == 1) {
-            Questions[i][1] = "Nicolas Maquiavelo";
-            Questions[i][2] = "Francis Bacon";
-            Questions[i][3] = "Rene Descartes";
-            Questions[i][4] = "Galileo Galilei";
+            Questions[i][1] = "-Nicolas Maquiavelo";
+            Questions[i][2] = "-Francis Bacon";
+            Questions[i][3] = "-Rene Descartes";
+            Questions[i][4] = "-Galileo Galilei";
         }
         else if (i == 2) {
-            Questions[i][1] = "Rene Descartes";
-            Questions[i][2] = "Isaac Newton";
-            Questions[i][3] = "Da Vinci";
-            Questions[i][4] = "Erasmo de Roterdam";
+            Questions[i][1] = "-Rene Descartes";
+            Questions[i][2] = "-Isaac Newton";
+            Questions[i][3] = "-Leonardo Da Vinci";
+            Questions[i][4] = "-Erasmo de Roterdam";
         }
         else if (i == 3) {
-            Questions[i][1] = "Copernico";
-            Questions[i][2] = "Tomas de Aquino";
-            Questions[i][3] = "Aristoteles";
-            Questions[i][4] = "Platon";
+            Questions[i][1] = "-Nicolas Copernico";
+            Questions[i][2] = "-Tomas de Aquino";
+            Questions[i][3] = "-Aristoteles";
+            Questions[i][4] = "-Platon";
         }
         else if (i == 4) {
-            Questions[i][1] = "La imprenta";
-            Questions[i][2] = "El Astrolabio";
-            Questions[i][3] = "La Nao y la Carabela";
-            Questions[i][4] = "El Telescopio";
+            Questions[i][1] = "-La imprenta";
+            Questions[i][2] = "-El Astrolabio";
+            Questions[i][3] = "-La Nao y la Carabela";
+            Questions[i][4] = "-El Telescopio";
         }
 
     }
@@ -613,10 +625,10 @@ void NivelUnoScene::historia()
     {
 
         if (i == 0) {
-            Questions[i][1] = "La burguesia";
-            Questions[i][2] = "La monarquia";
-            Questions[i][3] = "El mercantilismo";
-            Questions[i][4] = "El proletariado";
+            Questions[i][1] = "-La burguesia";
+            Questions[i][2] = "-La monarquia";
+            Questions[i][3] = "-El mercantilismo";
+            Questions[i][4] = "-El proletariado";
         }
         else if (i == 1) {
             Questions[i][1] = "-Inglaterra";
@@ -625,10 +637,10 @@ void NivelUnoScene::historia()
             Questions[i][4] = "-Egipto";
         }
         else if (i == 2) {
-            Questions[i][1] = "-Florencia-Napoli";
-            Questions[i][2] = "-Amsterdam-Cracovia";
-            Questions[i][3] = "-Reims-Colonia";
-            Questions[i][4] = "-Milan-Lourdes";
+            Questions[i][1] = "-Florencia y Napoli";
+            Questions[i][2] = "-Amsterdam y Cracovia";
+            Questions[i][3] = "-Reims y Colonia";
+            Questions[i][4] = "-Milan y Lourdes";
         }
         else if (i == 3) {
             Questions[i][1] = "-Estambul en Turquia";
@@ -639,8 +651,8 @@ void NivelUnoScene::historia()
         else if (i == 4) {
             Questions[i][1] = "-La imprenta y brujula";
             Questions[i][2] = "-La rueda y escritura";
-            Questions[i][3] = "-Maquinas a vapor";
-            Questions[i][4] = "-Maquinas de produccion \nen masa";
+            Questions[i][3] = "-Las maquinas a vapor";
+            Questions[i][4] = "-Las maquinas de produccion \nen masa";
         }
 
     }
@@ -706,8 +718,50 @@ void NivelUnoScene::correctAnswerCallback(Ref* sender)
         this->puntuacion += 100;
         puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 
+        //Settear la imagen del feedback en caso de que seleccionara correctamente opción de Arte
         if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 0)
             feedback->setTexture("images/arte1Correcta.png");
+        else if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 1)
+            feedback->setTexture("images/arte2Correcta.png");
+        else if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 2)
+            feedback->setTexture("images/arte3Correcta.png");
+        else if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 3)
+            feedback->setTexture("images/arte4Correcta.png");
+        else if (this->actualQuestion.first == "arte" && this->actualQuestion.second == 4)
+            feedback->setTexture("images/arte5Correcta.png");
+        //Settear la imagen del feedback en caso de que seleccionara correctamente opción de Ciencia
+        if (this->actualQuestion.first == "ciencia" && this->actualQuestion.second == 0)
+            feedback->setTexture("images/ciencia1Correcta.png");
+        else if (this->actualQuestion.first == "ciencia" && this->actualQuestion.second == 1)
+            feedback->setTexture("images/ciencia2Correcta.png");
+        else if (this->actualQuestion.first == "ciencia" && this->actualQuestion.second == 2)
+            feedback->setTexture("images/ciencia3Correcta.png");
+        else if (this->actualQuestion.first == "ciencia" && this->actualQuestion.second == 3)
+            feedback->setTexture("images/ciencia4Correcta.png");
+        else if (this->actualQuestion.first == "ciencia" && this->actualQuestion.second == 4)
+            feedback->setTexture("images/ciencia5Correcta.png");
+        //Settear la imagen del feedback en caso de que seleccionara correctamente opción de Política
+        if (this->actualQuestion.first == "politica" && this->actualQuestion.second == 0)
+            feedback->setTexture("images/politica1Correcta.png");
+        else if (this->actualQuestion.first == "politica" && this->actualQuestion.second == 1)
+            feedback->setTexture("images/politica2Correcta.png");
+        else if (this->actualQuestion.first == "politica" && this->actualQuestion.second == 2)
+            feedback->setTexture("images/politica3Correcta.png");
+        else if (this->actualQuestion.first == "politica" && this->actualQuestion.second == 3)
+            feedback->setTexture("images/politica4Correcta.png");
+        else if (this->actualQuestion.first == "politica" && this->actualQuestion.second == 4)
+            feedback->setTexture("images/politica5Correcta.png");
+        //Settear la imagen del feedback en caso de que seleccionara correctamente opción de Historia
+        if (this->actualQuestion.first == "historia" && this->actualQuestion.second == 0)
+            feedback->setTexture("images/historia1Correcta.png");
+        else if (this->actualQuestion.first == "historia" && this->actualQuestion.second == 1)
+            feedback->setTexture("images/historia2Correcta.png");
+        else if (this->actualQuestion.first == "historia" && this->actualQuestion.second == 2)
+            feedback->setTexture("images/historia3Correcta.png");
+        else if (this->actualQuestion.first == "historia" && this->actualQuestion.second == 3)
+            feedback->setTexture("images/historia4Correcta.png");
+        else if (this->actualQuestion.first == "historia" && this->actualQuestion.second == 4)
+            feedback->setTexture("images/historia5Correcta.png");
     }
 }
 
