@@ -1,4 +1,3 @@
-//Leo Pazzetti
 #include "NivelUnoScene.h"
 #include "MapScene.h"
 #include "extensions/cocos-ext.h"
@@ -12,6 +11,7 @@ USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace ui;
 using namespace std;
+
 Scene* NivelUnoScene::createScene()
 {
     // 'scene' is an autorelease object
@@ -71,7 +71,7 @@ bool NivelUnoScene::init()
 
     //Crear el botón para girar la ruleta y posicionarlo
     ui::Button* botonS = ui::Button::create("images/button1.png", "images/button2.png");
-    botonS->setPosition(Vec2(visibleSize.width / 2 + origin.x, (visibleSize.height / 5 + origin.y) - 20));
+    botonS->setPosition(Vec2(visibleSize.width / 2 + origin.x +20, (visibleSize.height / 5 + origin.y) - 20));
 
     //Añadirle evento al botón que hace girar la ruleta 
     botonS->addTouchEventListener(CC_CALLBACK_2(NivelUnoScene::spinR, this));
@@ -80,7 +80,12 @@ bool NivelUnoScene::init()
     Ruleta = Sprite::create("images/ruleta.png");
     Ruleta->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 2) + 5));
 
+    Apuntador = Sprite::create("images/guia.png");
+    Apuntador->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 3.7) ));
+
+
     //Añadir botones y ruleta a la escena
+    this->addChild(Apuntador, 2);
     this->addChild(Ruleta, 1);
     this->addChild(botonS, 2);
 
@@ -157,7 +162,7 @@ bool NivelUnoScene::init()
     this->respuesta = false;
 
     this->questionShown = false;
-    
+
     return true;
 }
 
@@ -263,9 +268,9 @@ void NivelUnoScene::spinR(Ref* sender, ui::Widget::TouchEventType type)
 }
 
 //Función que selecciona la categoría en base al ángulo de la rueda
-void NivelUnoScene::selectCategory() 
+void NivelUnoScene::selectCategory()
 {
-    
+
     vueltas = Ruleta->getRotation() / 360;
     this->angle = Ruleta->getRotation() - (360 * vueltas);
 
@@ -315,7 +320,7 @@ bool NivelUnoScene::checkrep(int n, int num[])
 }
 
 //-------------
-bool NivelUnoScene::checkpreg(int n, int num[]) 
+bool NivelUnoScene::checkpreg(int n, int num[])
 {
     for (int i = 0; i < 5; i++)
         if (n == num[i])
@@ -375,7 +380,7 @@ void NivelUnoScene::arte()
     //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
     if (iteradorA >= 5 || A[4] != -1)
     {
-        for (int i = 0; i < 5; i++) 
+        for (int i = 0; i < 5; i++)
         {
             A[i] = -1;
             iteradorA = 0;
@@ -384,13 +389,13 @@ void NivelUnoScene::arte()
 
     //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
     int random = 0;
-    do 
+    do
     {
         random = (rand() % 5);
     } while (checkpreg(random, A));
     A[iteradorA] = random;
     iteradorA++;
-    
+
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("arte", random);
@@ -487,7 +492,7 @@ void NivelUnoScene::ciencia()
     } while (checkpreg(random, C));
     C[iteradorC] = random;
     iteradorC++;
-    
+
     pregunta->setString(Questions[random][0]);
 
     this->actualQuestion = make_pair("ciencia", random);
@@ -711,7 +716,7 @@ void NivelUnoScene::historia()
 void NivelUnoScene::correctAnswerCallback(Ref* sender)
 {
     //IF QUE SE ASEGURA QUE AUN NO SE HAYA PRESIONADO NINGUNA OTRA RESPUESTA
-    if (respuesta==true) 
+    if (respuesta == true)
     {
         respuesta = false;
         puntosSprite->setTexture("images/+100puntos.png");
@@ -768,11 +773,11 @@ void NivelUnoScene::correctAnswerCallback(Ref* sender)
 void NivelUnoScene::wrongAnswerCallback(Ref* sender)
 {
     //IF QUE SE ASEGURA QUE AUN NO SE HAYA PRESIONADO NINGUNA OTRA RESPUESTA
-    if (respuesta == true) 
+    if (respuesta == true)
     {
         respuesta = false;
-        puntosSprite->setTexture("images/-50puntos.png");
-        this->puntuacion -= 50;
+        //puntosSprite->setTexture("images/-50puntos.png");
+       // this->puntuacion -= 50;
         puntuacionLabel->setString("Puntuacion: " + to_string(puntuacion));
 
         if (this->actualQuestion.first == "arte" || this->actualQuestion.first == "historia")
