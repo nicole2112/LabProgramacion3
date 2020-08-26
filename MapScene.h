@@ -24,7 +24,10 @@ public:
     void Play(Ref* pSender);
     void NivelDos(Ref* pSender);
     void NivelTres(Ref* pSender);
-    
+    void ImageButton(Ref* pSender);
+    void ImageButton2(Ref* pSender);
+    void ImageButton3(Ref* pSender);
+
     // void onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event);
     void inicializarTeclado(void);
     void presionarTecla(EventKeyboard::KeyCode key, Event* event);
