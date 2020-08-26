@@ -59,7 +59,7 @@ private:
     int H[5];
     int P[5];
     int C[5];
-    
+
     //Funciones para las preguntas de cada categoría
     void arte();
     void historia();
@@ -73,6 +73,8 @@ private:
 
     Sprite* feedback;
 
+    Sprite* Apuntador;
+
     std::pair<std::string, int> actualQuestion; //primero categoria, segundo número de pregunta
 
     // Funciones para inicializar teclado y manejar sus eventos
@@ -81,7 +83,7 @@ private:
 
     //Funciones callback
     void GoBack(Ref* pSender);
-    void spinR( Ref* sender, ui::Widget::TouchEventType type);
+    void spinR(Ref* sender, ui::Widget::TouchEventType type);
     void correctAnswerCallback(Ref* sender);
     void wrongAnswerCallback(Ref* sender);
     void showQuestion(Ref*);
