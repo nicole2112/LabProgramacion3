@@ -70,8 +70,8 @@ bool NivelUnoScene::init()
 
 
     //Crear el botón para girar la ruleta y posicionarlo
-    ui::Button* botonS = ui::Button::create("images/button1.png", "images/button2.png");
-    botonS->setPosition(Vec2(visibleSize.width / 2 + origin.x +20, (visibleSize.height / 5 + origin.y) - 20));
+    ui::Button* botonS = ui::Button::create("images/P1.png", "images/P2.png");
+    botonS->setPosition(Vec2(visibleSize.width / 2 + 80, (visibleSize.height /3.7)));
 
     //Añadirle evento al botón que hace girar la ruleta 
     botonS->addTouchEventListener(CC_CALLBACK_2(NivelUnoScene::spinR, this));
