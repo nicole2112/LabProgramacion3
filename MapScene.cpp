@@ -93,7 +93,7 @@ bool MapScene::init()
 
     log("Initializing map scene");
 
-    auto bg = cocos2d::LayerColor::create(Color4B(30, 144, 255, 255));
+    auto bg = cocos2d::LayerColor::create(Color4B(158, 236, 219, 255));
     this->addChild(bg, -1);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();

@@ -25,38 +25,38 @@ void MainMenu::presionarTecla(EventKeyboard::KeyCode key, Event *event) {
 
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW: //Si se presiona la flecha derecha, se llaman las funciones
                                                         //Callbacks respectivas
-            if (menuItem1->getColor() == Color3B::RED) {
+            if (menuItem1->getColor() == Color3B::GREEN) {
                 mapaCloseCallback(this);
             } 
-            else if (menuItem2->getColor() == Color3B::RED) {
+            else if (menuItem2->getColor() == Color3B::GREEN) {
                 puntuacionCloseCallback(this);
             }
-            else if (menuItem3->getColor() == Color3B::RED) {
+            else if (menuItem3->getColor() == Color3B::GREEN) {
                 salirCloseCallback(this);
             }
             log("Right arrow pressed");
             break;
         case EventKeyboard::KeyCode::KEY_UP_ARROW: //Con las teclas arriba y abajo solo se cambia la
                                                     //selección del menú
-            if (menuItem2->getColor() == Color3B::RED) {
+            if (menuItem2->getColor() == Color3B::GREEN) {
                 menuItem2->setColor(Color3B::BLACK);
-                menuItem1->setColor(Color3B::RED);
+                menuItem1->setColor(Color3B::GREEN);
             }
-            else if (menuItem3->getColor() == Color3B::RED) {
+            else if (menuItem3->getColor() == Color3B::GREEN) {
                 menuItem3->setColor(Color3B::BLACK);
-                menuItem2->setColor(Color3B::RED);
+                menuItem2->setColor(Color3B::GREEN);
             }
             log("Up arrow pressed");
             break;
         case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 
-            if (menuItem1->getColor() == Color3B::RED) {
+            if (menuItem1->getColor() == Color3B::GREEN) {
                 menuItem1->setColor(Color3B::BLACK);
-                menuItem2->setColor(Color3B::RED);
+                menuItem2->setColor(Color3B::GREEN);
             }
-            else if (menuItem2->getColor() == Color3B::RED) {
+            else if (menuItem2->getColor() == Color3B::GREEN) {
                 menuItem2->setColor(Color3B::BLACK);
-                menuItem3->setColor(Color3B::RED);
+                menuItem3->setColor(Color3B::GREEN);
             }
             log("Down arrow pressed");
             break;
@@ -88,16 +88,29 @@ bool MainMenu::init()
 
     log("Initializing scene");
 
-    auto bg = cocos2d::LayerColor::create(Color4B(30, 144, 255, 255));
-    this->addChild(bg, -1);
+    auto bg = cocos2d::LayerColor::create(Color4B(158, 236, 219, 255));
+    this->addChild(bg, -2);
 
     //1. Se asignan las variables para manejo de posiciones en la pantalla
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    auto nube = Sprite::create("Images/nube.png");
+    nube->setPosition(Vec2(origin.x + visibleSize.width / 2 + 150, origin.y + visibleSize.height / 2 + 100));
+    this->addChild(nube, -1);
+
+    auto nube2 = Sprite::create("Images/nube.png");
+    nube2->setPosition(Vec2(origin.x + visibleSize.width / 2 - 150, origin.y + visibleSize.height / 2 + 115));
+    nube2->setFlippedX(true);
+    this->addChild(nube2, -1);
+
+    auto mountains = Sprite::create("Images/montañas.png");
+    mountains->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height / 2 - 60));
+    this->addChild(mountains, -1);
+
     //2. Colocando la imagen de fondo
-    auto spriteFondo = Sprite::create("Images/barco.png");
-    spriteFondo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    auto spriteFondo = Sprite::create("Images/castillo.png");
+    spriteFondo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 8));
     this->addChild(spriteFondo, 0); //Añadir la imagen a la pantalla
 
     //3. Crear cada menú ítem 
@@ -115,7 +128,7 @@ bool MainMenu::init()
     menuItem2->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 2));
     menuItem3->setPosition(Vec2(origin.x +visibleSize.width / 2, (visibleSize.height / 4) * 1));
 
-    menuItem1->setColor(Color3B::RED); //color inicial de la primera opción
+    menuItem1->setColor(Color3B::GREEN); //color inicial de la primera opción
     menuItem2->setColor(Color3B::BLACK);
     menuItem3->setColor(Color3B::BLACK);
 
@@ -158,7 +171,7 @@ void MainMenu::puntuacionCloseCallback(Ref* sender) {
 }
 
 void MainMenu::mapaCloseCallback(Ref* sender) {
-    menuItem1->setColor(Color3B::RED);
+    menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);
     menuItem3->setColor(Color3B::BLACK);
     log("Abriendo Mapa");
@@ -174,7 +187,7 @@ void MainMenu::salirCloseCallback(Ref* pSender)
 {
     menuItem1->setColor(Color3B::BLACK);
     menuItem2->setColor(Color3B::BLACK);
-    menuItem3->setColor(Color3B::RED);
+    menuItem3->setColor(Color3B::GREEN);
     //Cerrando la escena actual y finalizando el aplicativo
     Director::getInstance()->end();
 }

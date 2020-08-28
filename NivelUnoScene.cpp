@@ -81,7 +81,7 @@ bool NivelUnoScene::init()
     Ruleta->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 2) + 5));
 
     Apuntador = Sprite::create("images/guia.png");
-    Apuntador->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 3.7) ));
+    Apuntador->setPosition(Point((visibleSize.width / 2), (visibleSize.height / 3.7) + 5));
 
 
     //Añadir botones y ruleta a la escena
@@ -110,7 +110,7 @@ bool NivelUnoScene::init()
     //Se crea el sprite de la puntuación obtenida
     puntosSprite = Sprite::create("images/empty.png");
     if (puntosSprite != nullptr) {
-        puntosSprite->setPosition(Vec2(visibleSize.width / 2 + 170, (visibleSize.height / 2 - 40) - 20));
+        puntosSprite->setPosition(Vec2(visibleSize.width / 2 + 170, visibleSize.height / 2 - 65));
         this->addChild(puntosSprite, 1);
     }
 
