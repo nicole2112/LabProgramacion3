@@ -51,7 +51,7 @@ bool NivelUnoScene::init()
     }
 
     //Instrucciones
-    auto instrucciones = Label::createWithTTF("Gire la ruleta, clickee Enter para \nvisualizar la pregunta y luego\nseleccione una opcion.", "fonts/Marker Felt.ttf", 11);
+    auto instrucciones = Label::createWithTTF("Gire la ruleta, clickee Enter para \nvisualizar la pregunta y luego\nseleccione una opcion.", "fonts/arial.ttf", 10);
     if (instrucciones != nullptr) {
         instrucciones->setColor(Color3B::WHITE);
         // position the label on the center of the screen
@@ -97,7 +97,7 @@ bool NivelUnoScene::init()
     }
 
     //Se crea el label donde sale la pregunta
-    pregunta = Label::createWithTTF("", "fonts/Marker Felt.ttf", 14);
+    pregunta = Label::createWithTTF("", "fonts/arial.ttf", 12);
     if (pregunta != nullptr) {
         pregunta->setColor(Color3B::WHITE);
         // Pone el Label a la derecha de la pantalla
@@ -122,15 +122,15 @@ bool NivelUnoScene::init()
     }
 
     //Agrega los botones de opciones
-    item1 = MenuItemFont::create("Opcion 1", CC_CALLBACK_1(NivelUnoScene::correctAnswerCallback, this));
-    item2 = MenuItemFont::create("Opcion 2", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
-    item3 = MenuItemFont::create("Opcion 3", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
-    item4 = MenuItemFont::create("Opcion 4", CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
+    auto lbItem = Label::createWithTTF("Opcion", "fonts/arial.ttf", 12);
+    auto lbItem2 = Label::createWithTTF("Opcion", "fonts/arial.ttf", 12);
+    auto lbItem3 = Label::createWithTTF("Opcion", "fonts/arial.ttf", 12);
+    auto lbItem4 = Label::createWithTTF("Opcion", "fonts/arial.ttf", 12);
 
-    item1->setFontSizeObj(12);
-    item2->setFontSizeObj(12);
-    item3->setFontSizeObj(12);
-    item4->setFontSizeObj(12);
+    item1 = MenuItemLabel::create(lbItem, CC_CALLBACK_1(NivelUnoScene::correctAnswerCallback, this));
+    item2 = MenuItemLabel::create(lbItem2, CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
+    item3 = MenuItemLabel::create(lbItem3, CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
+    item4 = MenuItemLabel::create(lbItem4, CC_CALLBACK_1(NivelUnoScene::wrongAnswerCallback, this));
 
     mapad = Menu::create(item1, item2, item3, item4, NULL);
     mapad->setPosition(Point(0, 0));
@@ -139,7 +139,7 @@ bool NivelUnoScene::init()
 
     this->puntuacion = 0;
     //Se inicializa label de puntuación
-    puntuacionLabel = Label::createWithTTF("Puntuacion: " + to_string(puntuacion), "fonts/Marker Felt.ttf", 18);
+    puntuacionLabel = Label::createWithTTF("Puntuacion: " + to_string(puntuacion), "fonts/arial.ttf", 15);
     if (puntuacionLabel != nullptr) {
         puntuacionLabel->setColor(Color3B::WHITE);
         // Pone el Label a la derecha de la pantalla
@@ -305,7 +305,6 @@ void NivelUnoScene::selectCategory()
     }
 
     mapad->setVisible(true);
-
 }
 
 //FUNCIONES PARA LAS PREGUNTAS Y OPCIONES DE CADA CATEGORÍA
