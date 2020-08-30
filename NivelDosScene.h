@@ -45,7 +45,14 @@ private:
     void showQuestion(Ref*);
 
     bool checkrep(int, int[]);
-
+    void revisarRespuesta();
+    
+    //============================
+    int prioridad;
+    bool respuestaP1;
+    bool respuestaP2;
+    int correcta;
+    int R1;
+    int R2;
 };
-
 #endif // __NIVELDOS_SCENE_H__
