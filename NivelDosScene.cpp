@@ -67,7 +67,7 @@ bool NivelDosScene::init()
         this->addChild(teclasJugador2, 1);
     }
 
-    //TÌtulo
+    //T√≠tulo
     auto titulo = Sprite::create("images/tituloEpistemefighter.jpg");
     if (titulo != nullptr) {
         titulo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titulo->getContentSize().height + 20));
@@ -139,6 +139,15 @@ bool NivelDosScene::init()
     //inicializar eventos del teclado
     inicializarTeclado();
 
+    //===================
+    //Se inicializan la prioridad y las respuestas de los jugadores
+    respuestaP1 = false;
+    respuestaP2 = false;
+    prioridad = 0;
+    int correcta = 0;
+    int R1 = 0;
+    int R2 = 0;
+    
     return true;
 }
 
@@ -153,23 +162,146 @@ void NivelDosScene::inicializarTeclado() {
     _eventDispatcher->addEventListenerWithSceneGraphPriority(escuchador, this);
 }
 
-//FunciÛn que maneja lo que suceder· al presionar una tecla
+//Funci√≥n que maneja lo que suceder√° al presionar una tecla
 void NivelDosScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
 
     switch (key) { //Dependiendo de la tecla que se presione suceden distintos casos
 
-    case EventKeyboard::KeyCode::KEY_ESCAPE: //Si se presiona la tecla Esc, se llaman la funciÛn Callback respectiva
+    case EventKeyboard::KeyCode::KEY_ESCAPE: //Si se presiona la tecla Esc, se llaman la funci√≥n Callback respectiva
         NivelDosScene::GoBack(this);
         break;
     case EventKeyboard::KeyCode::KEY_ENTER:
         NivelDosScene::showQuestion(this);
         break;
     case EventKeyboard::KeyCode::KEY_1:
+            //If que se asegura que el player no ha respondido todavia
+        if (respuestaP1 == false) 
+        {
+            R1 = 1;
+            respuestaP1 = true;
+        }
+        
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0) 
+            prioridad = -1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_2:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP1 == false)
+        {
+            R1 = 2;
+            respuestaP1 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = -1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_3:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP1 == false)
+        {
+            R1 = 3;
+            respuestaP1 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = -1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_4:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP1 == false)
+        {
+            R1 = 4;
+            respuestaP1 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = -1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_7:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP2 == false)
+        {
+            R2 = 1;
+            respuestaP2 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = 1;
+
+        break;
+    case EventKeyboard::KeyCode::KEY_8:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP2 == false)
+        {
+            R2 = 2;
+            respuestaP2 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = 1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_9:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP2 == false)
+        {
+            R2 = 3;
+            respuestaP2 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = 1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
+        break;
+    case EventKeyboard::KeyCode::KEY_0:
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP2 == false)
+        {
+            R2 = 4;
+            respuestaP2 = true;
+        }
+
+        //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
+        if (prioridad == 0)
+            prioridad = 1;
+
+        if (respuestaP1 == true && respuestaP2 == true)
+            revisarRespuesta();
+
         break;
     }
 }
 
-//Revisa si ya existe la posiciÛn de las opciones en el arreglo de posiciones
+//Revisa si ya existe la posici√≥n de las opciones en el arreglo de posiciones
 bool NivelDosScene::checkrep(int n, int num[])
 {
     for (int i = 0; i < 4; i++)
@@ -179,6 +311,14 @@ bool NivelDosScene::checkrep(int n, int num[])
 }
 
 void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
+    //===================
+    //Al mostrar la preguntan reseta la prioridad y las respuestas de los jugadores
+    respuestaP1 = false;
+    respuestaP2 = false;
+    prioridad = 0;
+    int R1 = 0;
+    int R2 = 0;
+    
     this->lbPregunta->setString("El padre de la filosofia es considerado ser:");
 
     item1->setString("Socrates");
@@ -193,12 +333,12 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
-    int pos;//guardar· n˙mero random entre 0 y 3
+    int pos;//guardar√° n√∫mero random entre 0 y 3
     for (int i = 0; i < 4; i++)
     {
         do {
             pos = rand() % 4;
-        } while (checkrep(pos, posiciones)); //revisa si ya existe la posiciÛn en el arreglo
+        } while (checkrep(pos, posiciones)); //revisa si ya existe la posici√≥n en el arreglo
 
         posiciones[i] = pos;
     }
@@ -207,9 +347,42 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     item2->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[1])));
     item3->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[2])));
     item4->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[3])));
+    
+    //PROTOTIPO
+    //La posicion de la primera respuesta sera la correcta
+    correcta = posiciones[0] + 1;
 }
 
 void NivelDosScene::GoBack(cocos2d::Ref* pSender) {
     auto scene = MapScene::createScene();
     Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
+}
+
+void NivelDosScene::revisarRespuesta() 
+{
+    //IFs que revisan los 4 casos
+    if (R1 == correcta && R2 != correcta) 
+    {
+        //PLAYER 1 GANA
+    }
+    else if (R1 != correcta && R2 == correcta) 
+    {
+        //PLAYER 2 GANA
+    }
+    else if (R1 != correcta && R2 != correcta) 
+    {
+        //EMPATE
+    }
+    else if (R1 == correcta && R2 == correcta) 
+    {
+        //AMBOS RESPONDEN BIEN
+        if (prioridad == -1) 
+        {
+            //PLAYER 1 GANA
+        }
+        else if (prioridad == 1) 
+        {
+            //PLAYER 2 GANA
+        }
+    }
 }
