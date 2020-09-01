@@ -1,8 +1,10 @@
 //Leo Pazzetti
 #include "NivelDosScene.h"
 #include "MapScene.h"
-
+#include <string>
+#include <iostream>
 USING_NS_CC;
+using namespace std;
 
 
 Scene* NivelDosScene::createScene()
@@ -57,7 +59,7 @@ bool NivelDosScene::init()
 
     auto teclasJugador1 = Sprite::create("images/teclasJugador1.png");
     if (teclasJugador1 != nullptr) {
-        teclasJugador1->setPosition(Vec2(origin.x + visibleSize.width / 2  - 210 , origin.y + visibleSize.height / 2 - 95));
+        teclasJugador1->setPosition(Vec2(origin.x + visibleSize.width / 2 - 210, origin.y + visibleSize.height / 2 - 95));
         this->addChild(teclasJugador1, 1);
     }
 
@@ -75,18 +77,18 @@ bool NivelDosScene::init()
     }
 
     //Iniciar label para preguntas con instrucciones breves
-    lbPregunta = Label::createWithTTF("Objetivo: Ganar la batalla entre empiristas y racionalistas \ncontestando correcta y velozmente cada pregunta. \nPresione Enter para iniciar.", 
+    lbPregunta = Label::createWithTTF("Objetivo: Ganar la batalla entre empiristas y racionalistas \ncontestando correcta y velozmente cada pregunta. \nPresione Enter para iniciar.",
         "fonts/arial.ttf", 12);
     lbPregunta->setColor(Color3B::BLACK);
     lbPregunta->setAlignment(TextHAlignment::CENTER);
-    lbPregunta->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height / 2 + 90));
+    lbPregunta->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 90));
     this->addChild(lbPregunta, 2);
 
     //Inicializar opciones de respuestas
     item1 = Label::createWithTTF(" ", "fonts/arial.ttf", 12);
     item1->setColor(Color3B::BLACK);
     item1->setAlignment(TextHAlignment::LEFT);
-    item1->setAnchorPoint(Vec2(0,0));
+    item1->setAnchorPoint(Vec2(0, 0));
     this->addChild(item1, 2);
 
     item2 = Label::createWithTTF(" ", "fonts/arial.ttf", 12);
@@ -136,6 +138,30 @@ bool NivelDosScene::init()
         this->addChild(bgItemD, 1);
     }
 
+    this->vidaP1 = 5;
+    this->vidaP2 = 5;
+
+    //Label para las vidas del player1
+    p1Vidas = Label::createWithTTF("Vidas P1: " + to_string(vidaP1), "fonts/arial.ttf", 15);
+    if (p1Vidas != nullptr) {
+        p1Vidas->setColor(Color3B::WHITE);
+        // Pone el Label a la derecha de la pantalla
+        p1Vidas->setPosition(Vec2(origin.x + (visibleSize.width / 2) - 170, origin.y + 170));
+
+        // Añade el child al layer
+        this->addChild(p1Vidas, 1);
+    }
+    //Label para las vidas del player2
+    p2Vidas = Label::createWithTTF("Vidas P2: " + to_string(vidaP2), "fonts/arial.ttf", 15);
+    if (p2Vidas != nullptr) {
+        p2Vidas->setColor(Color3B::WHITE);
+        // Pone el Label a la derecha de la pantalla
+        p2Vidas->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 170, origin.y + 170));
+
+        // Añade el child al layer
+        this->addChild(p2Vidas, 1);
+    }
+
     //inicializar eventos del teclado
     inicializarTeclado();
 
@@ -148,6 +174,7 @@ bool NivelDosScene::init()
     int R1 = 0;
     int R2 = 0;
     
+
     return true;
 }
 
@@ -174,15 +201,15 @@ void NivelDosScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
         NivelDosScene::showQuestion(this);
         break;
     case EventKeyboard::KeyCode::KEY_1:
-            //If que se asegura que el player no ha respondido todavia
-        if (respuestaP1 == false) 
+        //If que se asegura que el player no ha respondido todavia
+        if (respuestaP1 == false)
         {
             R1 = 1;
             respuestaP1 = true;
         }
-        
+
         //if que maneja la prioridad: = -1 gana P1, = 1 gana P2
-        if (prioridad == 0) 
+        if (prioridad == 0)
             prioridad = -1;
 
         if (respuestaP1 == true && respuestaP2 == true)
@@ -318,7 +345,7 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     prioridad = 0;
     int R1 = 0;
     int R2 = 0;
-    
+
     this->lbPregunta->setString("El padre de la filosofia es considerado ser:");
 
     item1->setString("Socrates");
@@ -347,7 +374,7 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     item2->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[1])));
     item3->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[2])));
     item4->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[3])));
-    
+
     //PROTOTIPO
     //La posicion de la primera respuesta sera la correcta
     correcta = posiciones[0] + 1;
@@ -358,31 +385,58 @@ void NivelDosScene::GoBack(cocos2d::Ref* pSender) {
     Director::getInstance()->replaceScene(TransitionSlideInL::create(1, scene));
 }
 
-void NivelDosScene::revisarRespuesta() 
+void NivelDosScene::revisarRespuesta()
 {
     //IFs que revisan los 4 casos
-    if (R1 == correcta && R2 != correcta) 
+    if (R1 == correcta && R2 != correcta)
     {
         //PLAYER 1 GANA
+        p2PierdeVida();
     }
-    else if (R1 != correcta && R2 == correcta) 
+    else if (R1 != correcta && R2 == correcta)
     {
         //PLAYER 2 GANA
+        p1PierdeVida();
     }
-    else if (R1 != correcta && R2 != correcta) 
+    else if (R1 != correcta && R2 != correcta)
     {
         //EMPATE
     }
-    else if (R1 == correcta && R2 == correcta) 
+    else if (R1 == correcta && R2 == correcta)
     {
         //AMBOS RESPONDEN BIEN
-        if (prioridad == -1) 
+        if (prioridad == -1)
         {
             //PLAYER 1 GANA
+            p2PierdeVida();
         }
-        else if (prioridad == 1) 
+        else if (prioridad == 1)
         {
             //PLAYER 2 GANA
+            p1PierdeVida();
         }
     }
+}
+
+void NivelDosScene::p1PierdeVida()
+{
+    this->vidaP1--;
+    p1Vidas->setString("Vidas P1: " + to_string(vidaP2));
+
+    if (vidaP1 == 0)
+    {
+        //Jugador 2 Gana
+    }
+}
+
+void NivelDosScene::p2PierdeVida()
+{
+   this->vidaP2--;
+   p2Vidas->setString("Vidas P2: " + to_string(vidaP2));
+
+   if (vidaP2 == 0)
+   {
+       //Jugador 1 gana
+
+   }
 }
