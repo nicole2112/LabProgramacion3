@@ -167,8 +167,8 @@ bool NivelDosScene::init()
 
     //===================
     //Se inicializan la prioridad y las respuestas de los jugadores
-    respuestaP1 = false;
-    respuestaP2 = false;
+    respuestaP1 = true;
+    respuestaP2 = true;
     prioridad = 0;
     int correcta = 0;
     int R1 = 0;
@@ -338,13 +338,17 @@ bool NivelDosScene::checkrep(int n, int num[])
 }
 
 void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
+
+    if (!respuestaP1 || !respuestaP2) //validar que ambos contesten la pregunta para pasar a siguiente
+        return;
+
     //===================
     //Al mostrar la preguntan reseta la prioridad y las respuestas de los jugadores
     respuestaP1 = false;
     respuestaP2 = false;
     prioridad = 0;
-    int R1 = 0;
-    int R2 = 0;
+    R1 = 0;
+    R2 = 0;
 
     this->lbPregunta->setString("El padre de la filosofia es considerado ser:");
 
@@ -421,7 +425,7 @@ void NivelDosScene::revisarRespuesta()
 void NivelDosScene::p1PierdeVida()
 {
     this->vidaP1--;
-    p1Vidas->setString("Vidas P1: " + to_string(vidaP2));
+    p1Vidas->setString("Vidas P1: " + to_string(vidaP1));
 
     if (vidaP1 == 0)
     {
