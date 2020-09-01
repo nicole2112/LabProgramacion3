@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __NIVELDOS_SCENE_H__
 #define __NIVELDOS_SCENE_H__
 
@@ -35,6 +36,8 @@ private:
     Label* item2;
     Label* item3;
     Label* item4;
+    Label* p1Vidas;
+    Label* p2Vidas;
 
     Sprite* bgItemA;
     Sprite* bgItemB;
@@ -46,7 +49,10 @@ private:
 
     bool checkrep(int, int[]);
     void revisarRespuesta();
-    
+
+    void p1PierdeVida();
+    void p2PierdeVida();
+
     //============================
     int prioridad;
     bool respuestaP1;
@@ -54,5 +60,7 @@ private:
     int correcta;
     int R1;
     int R2;
+    int vidaP1;
+    int vidaP2;
 };
 #endif // __NIVELDOS_SCENE_H__
