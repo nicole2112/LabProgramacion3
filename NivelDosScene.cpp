@@ -3,6 +3,7 @@
 #include "MapScene.h"
 #include <string>
 #include <iostream>
+#include <cocos\editor-support\cocostudio\SimpleAudioEngine.h>
 USING_NS_CC;
 using namespace std;
 
@@ -57,20 +58,20 @@ bool NivelDosScene::init()
     lbRacionalistas->setPosition(Vec2(origin.x + visibleSize.width / 2 + 200, origin.y + visibleSize.height - lbRacionalistas->getContentSize().height));
     this->addChild(lbRacionalistas, 0);
 
-    auto teclasJugador1 = Sprite::create("images/teclasJugador1.png");
+    auto teclasJugador1 = Sprite::create("Images/teclasjugador1.PNG");
     if (teclasJugador1 != nullptr) {
         teclasJugador1->setPosition(Vec2(origin.x + visibleSize.width / 2 - 210, origin.y + visibleSize.height / 2 - 95));
         this->addChild(teclasJugador1, 1);
     }
 
-    auto teclasJugador2 = Sprite::create("images/teclasJugador2.png");
+    auto teclasJugador2 = Sprite::create("Images/teclasJugador2.png");
     if (teclasJugador2 != nullptr) {
         teclasJugador2->setPosition(Vec2(origin.x + visibleSize.width / 2 + 130, origin.y + visibleSize.height / 2 - 95));
         this->addChild(teclasJugador2, 1);
     }
 
     //Título
-    auto titulo = Sprite::create("images/tituloEpistemefighter.jpg");
+    auto titulo = Sprite::create("Images/tituloEpistemefighter.jpg");
     if (titulo != nullptr) {
         titulo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titulo->getContentSize().height + 20));
         this->addChild(titulo, 0);
@@ -173,7 +174,7 @@ bool NivelDosScene::init()
     int correcta = 0;
     int R1 = 0;
     int R2 = 0;
-    
+
 
     return true;
 }
@@ -195,6 +196,7 @@ void NivelDosScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
     switch (key) { //Dependiendo de la tecla que se presione suceden distintos casos
 
     case EventKeyboard::KeyCode::KEY_ESCAPE: //Si se presiona la tecla Esc, se llaman la función Callback respectiva
+        this->schedule(CC_SCHEDULE_SELECTOR(NivelDosScene::stopMusic));
         NivelDosScene::GoBack(this);
         break;
     case EventKeyboard::KeyCode::KEY_ENTER:
@@ -328,6 +330,11 @@ void NivelDosScene::presionarTecla(EventKeyboard::KeyCode key, Event* event) {
     }
 }
 
+void NivelDosScene::stopMusic(float m) {
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+}
+
 //Revisa si ya existe la posición de las opciones en el arreglo de posiciones
 bool NivelDosScene::checkrep(int n, int num[])
 {
@@ -430,17 +437,20 @@ void NivelDosScene::p1PierdeVida()
     if (vidaP1 == 0)
     {
         //Jugador 2 Gana
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ofortuna.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ofortuna.mp3");
     }
 }
 
 void NivelDosScene::p2PierdeVida()
 {
-   this->vidaP2--;
-   p2Vidas->setString("Vidas P2: " + to_string(vidaP2));
+    this->vidaP2--;
+    p2Vidas->setString("Vidas P2: " + to_string(vidaP2));
 
-   if (vidaP2 == 0)
-   {
-       //Jugador 1 gana
-
-   }
+    if (vidaP2 == 0)
+    {
+        //Jugador 1 gana
+        CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/HallowedBeThyName.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/HallowedBeThyName.mp3");
+    }
 }
