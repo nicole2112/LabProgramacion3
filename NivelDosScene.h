@@ -53,6 +53,8 @@ private:
     void p1PierdeVida();
     void p2PierdeVida();
 
+    void stopMusic(float);
+
     //============================
     int prioridad;
     bool respuestaP1;
