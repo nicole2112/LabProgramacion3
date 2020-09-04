@@ -38,6 +38,7 @@ private:
     Label* item4;
     Label* p1Vidas;
     Label* p2Vidas;
+    Label* lbSalir;
 
     Sprite* bgItemA;
     Sprite* bgItemB;
