@@ -437,10 +437,24 @@ void NivelDosScene::p1PierdeVida()
     if (vidaP1 == 0)
     {
         //Jugador 2 Gana
-        auto lbEmpiristas = Label::createWithTTF("Racionalistas Ganan", "fonts/arial.ttf", 10);
-        lbEmpiristas->setColor(Color3B::GREEN);
-        lbEmpiristas->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbEmpiristas->getContentSize().height));
-        this->addChild(lbEmpiristas, 0);
+        auto lbEmpiristasG = Label::createWithTTF("Racionalistas Ganan", "fonts/arial.ttf", 25);
+        lbEmpiristasG->setColor(Color3B::BLUE);
+        lbEmpiristasG->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbEmpiristasG->getContentSize().height));
+        this->addChild(lbEmpiristasG, 0);
+        bgItemA->setVisible(false);
+        bgItemB->setVisible(false);
+        bgItemC->setVisible(false);
+        bgItemD->setVisible(false);
+        item1->setVisible(false);
+        item2->setVisible(false);
+        item3->setVisible(false);
+        item4->setVisible(false);
+        lbPregunta->setVisible(false);
+        lbSalir = Label::createWithTTF("Presione Escape para salir.", "fonts/arial.ttf", 12);
+        lbSalir->setColor(Color3B::BLACK);
+        lbSalir->setAlignment(TextHAlignment::CENTER);
+        lbSalir->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 90));
+        this->addChild(lbSalir, 2);
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ofortuna.mp3");
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ofortuna.mp3");
     }
@@ -454,10 +468,24 @@ void NivelDosScene::p2PierdeVida()
     if (vidaP2 == 0)
     {
         //Jugador 1 gana
-        auto lbRacionalistas = Label::createWithTTF("Empiristas Ganan", "fonts/arial.ttf", 10);
-        lbRacionalistas->setColor(Color3B::GREEN);
-        lbRacionalistas->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height - lbRacionalistas->getContentSize().height));
-        this->addChild(lbRacionalistas, 0);
+        auto lbRacionalistasG = Label::createWithTTF("Empiristas Ganan", "fonts/arial.ttf", 25);
+        lbRacionalistasG->setColor(Color3B::BLUE);
+        lbRacionalistasG->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height - lbRacionalistasG->getContentSize().height));
+        this->addChild(lbRacionalistasG, 0);
+        bgItemA->setVisible(false);
+        bgItemB->setVisible(false);
+        bgItemC->setVisible(false);
+        bgItemD->setVisible(false);
+        item1->setVisible(false);
+        item2->setVisible(false);
+        item3->setVisible(false);
+        item4->setVisible(false);
+        lbPregunta->setVisible(false);
+        lbSalir = Label::createWithTTF("Presione Escape para salir.","fonts/arial.ttf", 12);
+        lbSalir->setColor(Color3B::BLACK);
+        lbSalir->setAlignment(TextHAlignment::CENTER);
+        lbSalir->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 90));
+        this->addChild(lbSalir, 2);
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/HallowedBeThyName.mp3");
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/HallowedBeThyName.mp3");
     }
