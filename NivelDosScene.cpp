@@ -437,6 +437,10 @@ void NivelDosScene::p1PierdeVida()
     if (vidaP1 == 0)
     {
         //Jugador 2 Gana
+        auto lbEmpiristas = Label::createWithTTF("Racionalistas Ganan", "fonts/arial.ttf", 10);
+        lbEmpiristas->setColor(Color3B::GREEN);
+        lbEmpiristas->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbEmpiristas->getContentSize().height));
+        this->addChild(lbEmpiristas, 0);
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/Ofortuna.mp3");
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/Ofortuna.mp3");
     }
@@ -450,6 +454,10 @@ void NivelDosScene::p2PierdeVida()
     if (vidaP2 == 0)
     {
         //Jugador 1 gana
+        auto lbRacionalistas = Label::createWithTTF("Empiristas Ganan", "fonts/arial.ttf", 10);
+        lbRacionalistas->setColor(Color3B::GREEN);
+        lbRacionalistas->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height - lbRacionalistas->getContentSize().height));
+        this->addChild(lbRacionalistas, 0);
         CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/HallowedBeThyName.mp3");
         CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/HallowedBeThyName.mp3");
     }
