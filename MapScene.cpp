@@ -115,6 +115,11 @@ bool MapScene::init()
     auto menuItem5 = MenuItemImage::create("Images/x.png", "Images/x_roja.png", CC_CALLBACK_1(MapScene::ImageButton2, this));
     auto menuItem6 = MenuItemImage::create("Images/x.png", "Images/x_roja.png", CC_CALLBACK_1(MapScene::ImageButton3, this));
 
+    auto tituloNivelDos = Sprite::create("Images/tituloEpistemefighterMap.jpg");
+    if (tituloNivelDos != nullptr) {
+        tituloNivelDos->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 110));
+        this->addChild(tituloNivelDos, 1);
+    }
 
     menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);

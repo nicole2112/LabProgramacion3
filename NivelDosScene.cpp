@@ -71,7 +71,7 @@ bool NivelDosScene::init()
     }
 
     //Título
-    auto titulo = Sprite::create("Images/tituloEpistemefighter.jpg");
+    this->titulo = Sprite::create("Images/tituloEpistemefighter.jpg");
     if (titulo != nullptr) {
         titulo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titulo->getContentSize().height + 20));
         this->addChild(titulo, 0);
@@ -460,6 +460,7 @@ void NivelDosScene::p1PierdeVida()
         lbEmpiristasG->setColor(Color3B::BLUE);
         lbEmpiristasG->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbEmpiristasG->getContentSize().height));
         this->addChild(lbEmpiristasG, 0);
+        this->titulo->setVisible(false);
         bgItemA->setVisible(false);
         bgItemB->setVisible(false);
         bgItemC->setVisible(false);
@@ -485,25 +486,25 @@ void NivelDosScene::p2PierdeVida()
 
     switch (vidaP2) {
     case 5:
-        p1Vida->setTexture("images/HealthBar5.png");
+        p2Vida->setTexture("images/HealthBar5.png");
         break;
     case 4:
-        p1Vida->setTexture("images/HealthBar4.png");
+        p2Vida->setTexture("images/HealthBar4.png");
         break;
     case 3:
-        p1Vida->setTexture("images/HealthBar3.png");
+        p2Vida->setTexture("images/HealthBar3.png");
         break;
     case 2:
-        p1Vida->setTexture("images/HealthBar2.png");
+        p2Vida->setTexture("images/HealthBar2.png");
         break;
     case 1:
-        p1Vida->setTexture("images/HealthBar1.png");
+        p2Vida->setTexture("images/HealthBar1.png");
         break;
     case 0:
-        p1Vida->setTexture("images/HealthBar0.png");
+        p2Vida->setTexture("images/HealthBar0.png");
         break;
     default:
-        p1Vida->setTexture("images/HealthBar0.png");
+        p2Vida->setTexture("images/HealthBar0.png");
         break;
     }
 
@@ -514,6 +515,7 @@ void NivelDosScene::p2PierdeVida()
         lbRacionalistasG->setColor(Color3B::BLUE);
         lbRacionalistasG->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbRacionalistasG->getContentSize().height));
         this->addChild(lbRacionalistasG, 0);
+        this->titulo->setVisible(false);
         bgItemA->setVisible(false);
         bgItemB->setVisible(false);
         bgItemC->setVisible(false);

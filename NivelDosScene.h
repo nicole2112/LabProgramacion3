@@ -30,6 +30,8 @@ private:
     void inicializarTeclado(void);
     void presionarTecla(EventKeyboard::KeyCode key, Event* event);
 
+    Sprite* titulo;
+
     cocos2d::Sprite* mySprite;
     Label* lbPregunta;
     Label* item1;
