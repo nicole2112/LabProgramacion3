@@ -139,6 +139,22 @@ bool NivelDosScene::init()
         this->addChild(bgItemD, 1);
     }
 
+    p1Vida = Sprite::create("images/HealthBar5.png");
+    if (p1Vida != nullptr)
+    {
+        p1Vida->setPosition(Vec2(origin.x + (visibleSize.width / 2) - 190, origin.y + 275));
+        p1Vida->setVisible(true);
+        this->addChild(p1Vida, 1);
+    }
+
+    p2Vida = Sprite::create("images/HealthBar5.png");
+    if (p2Vida != nullptr)
+    {
+        p2Vida->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 190, origin.y + 275));
+        p2Vida->setVisible(true);
+        this->addChild(p2Vida, 1);
+    }
+
     this->vidaP1 = 5;
     this->vidaP2 = 5;
 
@@ -434,6 +450,30 @@ void NivelDosScene::p1PierdeVida()
     this->vidaP1--;
     p1Vidas->setString("Vidas P1: " + to_string(vidaP1));
 
+    switch (vidaP1) {
+    case 5:
+        p1Vida->setTexture("images/HealthBar5.png");
+        break;
+    case 4:
+        p1Vida->setTexture("images/HealthBar4.png");
+        break;
+    case 3:
+        p1Vida->setTexture("images/HealthBar3.png");
+        break;
+    case 2:
+        p1Vida->setTexture("images/HealthBar2.png");
+        break;
+    case 1:
+        p1Vida->setTexture("images/HealthBar1.png");
+        break;
+    case 0:
+        p1Vida->setTexture("images/HealthBar0.png");
+        break;
+    default:
+        p1Vida->setTexture("images/HealthBar0.png");
+        break;
+    }
+
     if (vidaP1 == 0)
     {
         //Jugador 2 Gana
@@ -465,12 +505,36 @@ void NivelDosScene::p2PierdeVida()
     this->vidaP2--;
     p2Vidas->setString("Vidas P2: " + to_string(vidaP2));
 
+    switch (vidaP2) {
+    case 5:
+        p1Vida->setTexture("images/HealthBar5.png");
+        break;
+    case 4:
+        p1Vida->setTexture("images/HealthBar4.png");
+        break;
+    case 3:
+        p1Vida->setTexture("images/HealthBar3.png");
+        break;
+    case 2:
+        p1Vida->setTexture("images/HealthBar2.png");
+        break;
+    case 1:
+        p1Vida->setTexture("images/HealthBar1.png");
+        break;
+    case 0:
+        p1Vida->setTexture("images/HealthBar0.png");
+        break;
+    default:
+        p1Vida->setTexture("images/HealthBar0.png");
+        break;
+    }
+
     if (vidaP2 == 0)
     {
         //Jugador 1 gana
         auto lbRacionalistasG = Label::createWithTTF("Empiristas Ganan", "fonts/arial.ttf", 25);
         lbRacionalistasG->setColor(Color3B::BLUE);
-        lbRacionalistasG->setPosition(Vec2(origin.x + visibleSize.width / 2 , origin.y + visibleSize.height - lbRacionalistasG->getContentSize().height));
+        lbRacionalistasG->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - lbRacionalistasG->getContentSize().height));
         this->addChild(lbRacionalistasG, 0);
         bgItemA->setVisible(false);
         bgItemB->setVisible(false);
@@ -481,7 +545,7 @@ void NivelDosScene::p2PierdeVida()
         item3->setVisible(false);
         item4->setVisible(false);
         lbPregunta->setVisible(false);
-        lbSalir = Label::createWithTTF("Presione Escape para salir.","fonts/arial.ttf", 12);
+        lbSalir = Label::createWithTTF("Presione Escape para salir.", "fonts/arial.ttf", 12);
         lbSalir->setColor(Color3B::BLACK);
         lbSalir->setAlignment(TextHAlignment::CENTER);
         lbSalir->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 90));
