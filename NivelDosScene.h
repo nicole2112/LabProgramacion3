@@ -36,14 +36,14 @@ private:
     Label* item2;
     Label* item3;
     Label* item4;
-    Label* p1Vidas;
-    Label* p2Vidas;
     Label* lbSalir;
 
     Sprite* bgItemA;
     Sprite* bgItemB;
     Sprite* bgItemC;
     Sprite* bgItemD;
+    Sprite* p1Vida;
+    Sprite* p2Vida;
 
     void GoBack(Ref* pSender);
     void showQuestion(Ref*);
