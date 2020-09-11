@@ -139,6 +139,7 @@ bool NivelDosScene::init()
         this->addChild(bgItemD, 1);
     }
 
+    //Barras de Vida
     p1Vida = Sprite::create("images/HealthBar5.png");
     if (p1Vida != nullptr)
     {
@@ -157,28 +158,7 @@ bool NivelDosScene::init()
 
     this->vidaP1 = 5;
     this->vidaP2 = 5;
-
-    //Label para las vidas del player1
-    p1Vidas = Label::createWithTTF("Vidas P1: " + to_string(vidaP1), "fonts/arial.ttf", 15);
-    if (p1Vidas != nullptr) {
-        p1Vidas->setColor(Color3B::WHITE);
-        // Pone el Label a la derecha de la pantalla
-        p1Vidas->setPosition(Vec2(origin.x + (visibleSize.width / 2) - 170, origin.y + 170));
-
-        // Añade el child al layer
-        this->addChild(p1Vidas, 1);
-    }
-    //Label para las vidas del player2
-    p2Vidas = Label::createWithTTF("Vidas P2: " + to_string(vidaP2), "fonts/arial.ttf", 15);
-    if (p2Vidas != nullptr) {
-        p2Vidas->setColor(Color3B::WHITE);
-        // Pone el Label a la derecha de la pantalla
-        p2Vidas->setPosition(Vec2(origin.x + (visibleSize.width / 2) + 170, origin.y + 170));
-
-        // Añade el child al layer
-        this->addChild(p2Vidas, 1);
-    }
-
+    
     //inicializar eventos del teclado
     inicializarTeclado();
 
@@ -448,7 +428,6 @@ void NivelDosScene::revisarRespuesta()
 void NivelDosScene::p1PierdeVida()
 {
     this->vidaP1--;
-    p1Vidas->setString("Vidas P1: " + to_string(vidaP1));
 
     switch (vidaP1) {
     case 5:
@@ -503,7 +482,6 @@ void NivelDosScene::p1PierdeVida()
 void NivelDosScene::p2PierdeVida()
 {
     this->vidaP2--;
-    p2Vidas->setString("Vidas P2: " + to_string(vidaP2));
 
     switch (vidaP2) {
     case 5:
