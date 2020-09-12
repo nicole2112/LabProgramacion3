@@ -67,9 +67,13 @@ private:
 
     void cargarArte();
     void cargarHistoria();
+    void cargarPolitica();
+    void cargarCiencia();
 
     std::vector<std::vector<std::string>> vectorArte;
     std::vector<std::vector<std::string>> vectorHistoria;
+    std::vector<std::vector<std::string>> vectorPolitica;
+    std::vector<std::vector<std::string>> vectorCiencia;
 
     //Sprite que contiene la imagen con el título respectivo a cada categoría
     Sprite* actualCategory;
