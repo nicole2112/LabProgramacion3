@@ -2,6 +2,11 @@
 #define __NIVELTRES_SCENE_H__
 
 #include "cocos2d.h"
+#include "extensions/cocos-ext.h"
+#include"ui/CocosGUI.h"
+
+USING_NS_CC;
+USING_NS_CC_EXT;
 
 class NivelTresScene : public cocos2d::Layer
 {
@@ -21,6 +26,8 @@ public:
     cocos2d::Sprite* mySprite;
 
     void GoBack(Ref* pSender);
+    void KantScene(Ref* sender, ui::Widget::TouchEventType type);
+    void DescartesScene(Ref* sender, ui::Widget::TouchEventType type);
 
 };
 

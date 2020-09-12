@@ -163,6 +163,10 @@ bool NivelUnoScene::init()
 
     this->questionShown = false;
 
+    //Funciones para cargar archivos de texto de cada categoría
+    cargarArte();
+    cargarHistoria();
+
     return true;
 }
 
@@ -319,9 +323,9 @@ bool NivelUnoScene::checkrep(int n, int num[])
 }
 
 //-------------
-bool NivelUnoScene::checkpreg(int n, int num[])
+bool NivelUnoScene::checkpreg(int n, int num[], int size)
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < size; i++)
         if (n == num[i])
             return true;
     return false;
@@ -332,54 +336,54 @@ void NivelUnoScene::arte()
 {
 
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Encargado de pintar \nla capilla Sixtina:";
-    Questions[1][0] = "Genio del renacimiento que \nesculpio el Moises, el \nDavid y la Pieta:";
-    Questions[2][0] = "Estilo artistico que impregno\n el arte, filosofia, pintura \ny escritura, durante \nel renacimiento:";
-    Questions[3][0] = "Vision del hombre reflejada \nen el arte, la politica y las \nciencias durante el \nrenamiciento:";
-    Questions[4][0] = "4 genios del renacimiento \nllevados a la pantalla en los \ncomics de:";
-    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
-    {
+    //string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
+    //Questions[0][0] = "Encargado de pintar \nla capilla Sixtina:";
+    //Questions[1][0] = "Genio del renacimiento que \nesculpio el Moises, el \nDavid y la Pieta:";
+    //Questions[2][0] = "Estilo artistico que impregno\n el arte, filosofia, pintura \ny escritura, durante \nel renacimiento:";
+    //Questions[3][0] = "Vision del hombre reflejada \nen el arte, la politica y las \nciencias durante el \nrenamiciento:";
+    //Questions[4][0] = "4 genios del renacimiento \nllevados a la pantalla en los \ncomics de:";
+    //for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
+    //{
 
-        if (i == 0) {
-            Questions[i][1] = "-Miguel Angel";
-            Questions[i][2] = "-Donatello";
-            Questions[i][3] = "-Leonardo Da Vinci";
-            Questions[i][4] = "-Francis Bacon";
-        }
-        else if (i == 1) {
-            Questions[i][1] = "-Miguel Angel";
-            Questions[i][2] = "-Rafael Sanzio";
-            Questions[i][3] = "-Leonardo Da Vinci";
-            Questions[i][4] = "-Galileo Galilei";
-        }
-        else if (i == 2) { //falta modificar desde aca
-            Questions[i][1] = "-El Barroco";
-            Questions[i][2] = "-El Gotico";
-            Questions[i][3] = "-El Clasicismo";
-            Questions[i][4] = "-Romanticismo";
-        }
-        else if (i == 3) {
-            Questions[i][1] = "-Humanismo";
-            Questions[i][2] = "-Antropocentrismo";
-            Questions[i][3] = "-Paradigma Antropologico";
-            Questions[i][4] = "-Teocentrismo";
-        }
-        else if (i == 4) {
-            Questions[i][1] = "-Las Tortugas Ninjas";
-            Questions[i][2] = "-Los Caballeros del Zodiaco";
-            Questions[i][3] = "-Los Cuatro Fantasticos";
-            Questions[i][4] = "-Enemigos en Attack on Titan";
-        }
+    //    if (i == 0) {
+    //        Questions[i][1] = "-Miguel Angel";
+    //        Questions[i][2] = "-Donatello";
+    //        Questions[i][3] = "-Leonardo Da Vinci";
+    //        Questions[i][4] = "-Francis Bacon";
+    //    }
+    //    else if (i == 1) {
+    //        Questions[i][1] = "-Miguel Angel";
+    //        Questions[i][2] = "-Rafael Sanzio";
+    //        Questions[i][3] = "-Leonardo Da Vinci";
+    //        Questions[i][4] = "-Galileo Galilei";
+    //    }
+    //    else if (i == 2) { //falta modificar desde aca
+    //        Questions[i][1] = "-El Barroco";
+    //        Questions[i][2] = "-El Gotico";
+    //        Questions[i][3] = "-El Clasicismo";
+    //        Questions[i][4] = "-Romanticismo";
+    //    }
+    //    else if (i == 3) {
+    //        Questions[i][1] = "-Humanismo";
+    //        Questions[i][2] = "-Antropocentrismo";
+    //        Questions[i][3] = "-Paradigma Antropologico";
+    //        Questions[i][4] = "-Teocentrismo";
+    //    }
+    //    else if (i == 4) {
+    //        Questions[i][1] = "-Las Tortugas Ninjas";
+    //        Questions[i][2] = "-Los Caballeros del Zodiaco";
+    //        Questions[i][3] = "-Los Cuatro Fantasticos";
+    //        Questions[i][4] = "-Enemigos en Attack on Titan";
+    //    }
 
-    }
+    //}
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     //---------------
     //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
-    if (iteradorA >= 5 || A[4] != -1)
+    if (iteradorA >= vectorArte.size() || A[vectorArte.size() - 1] != -1)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < vectorArte.size(); i++)
         {
             A[i] = -1;
             iteradorA = 0;
@@ -391,18 +395,18 @@ void NivelUnoScene::arte()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, A));
+    } while (checkpreg(random, A, vectorArte.size()));
     A[iteradorA] = random;
     iteradorA++;
 
-    pregunta->setString(Questions[random][0]);
+    pregunta->setString(vectorArte[random][0]);
 
     this->actualQuestion = make_pair("arte", random);
 
-    item1->setString(Questions[random][1]);
-    item2->setString(Questions[random][2]);
-    item3->setString(Questions[random][3]);
-    item4->setString(Questions[random][4]);
+    item1->setString(vectorArte[random][1]);
+    item2->setString(vectorArte[random][2]);
+    item3->setString(vectorArte[random][3]);
+    item4->setString(vectorArte[random][4]);
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
@@ -488,7 +492,7 @@ void NivelUnoScene::ciencia()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, C));
+    } while (checkpreg(random, C, 5));
     C[iteradorC] = random;
     iteradorC++;
 
@@ -583,7 +587,7 @@ void NivelUnoScene::politica()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, P));
+    } while (checkpreg(random, P, 5));
     P[iteradorP] = random;
     iteradorP++;
 
@@ -619,54 +623,54 @@ void NivelUnoScene::politica()
 void NivelUnoScene::historia()
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Despues del feudalismo \nmedieval surge esta \nnueva clase social: ";
-    Questions[1][0] = "Monarquia europea \ncentralizada que nace \nen el renacimiento: ";
-    Questions[2][0] = "Dos ciudades-estado de Italia \nenfrentadas entre si, \nantes de la consolidacion \ndel estado moderno: ";
-    Questions[3][0] = "La toma de Constantinopla \nsupone un bloqueo comercial \nentre Europa y Asia, \n ocurrio en: ";
-    Questions[4][0] = "Resurge el interes por \nGrecia y Roma, junto al \ndeclive del sistema feudal e\n innovaciones entre ellas: ";
-    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
-    {
+    //string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
+    //Questions[0][0] = "Despues del feudalismo \nmedieval surge esta \nnueva clase social: ";
+    //Questions[1][0] = "Monarquia europea \ncentralizada que nace \nen el renacimiento: ";
+    //Questions[2][0] = "Dos ciudades-estado de Italia \nenfrentadas entre si, \nantes de la consolidacion \ndel estado moderno: ";
+    //Questions[3][0] = "La toma de Constantinopla \nsupone un bloqueo comercial \nentre Europa y Asia, \n ocurrio en: ";
+    //Questions[4][0] = "Resurge el interes por \nGrecia y Roma, junto al \ndeclive del sistema feudal e\n innovaciones entre ellas: ";
+    //for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
+    //{
 
-        if (i == 0) {
-            Questions[i][1] = "-La burguesia";
-            Questions[i][2] = "-La monarquia";
-            Questions[i][3] = "-El mercantilismo";
-            Questions[i][4] = "-El proletariado";
-        }
-        else if (i == 1) {
-            Questions[i][1] = "-Inglaterra";
-            Questions[i][2] = "-Grecia";
-            Questions[i][3] = "-Yugoslavia";
-            Questions[i][4] = "-Egipto";
-        }
-        else if (i == 2) {
-            Questions[i][1] = "-Florencia y Napoli";
-            Questions[i][2] = "-Amsterdam y Cracovia";
-            Questions[i][3] = "-Reims y Colonia";
-            Questions[i][4] = "-Milan y Lourdes";
-        }
-        else if (i == 3) {
-            Questions[i][1] = "-Estambul en Turquia";
-            Questions[i][2] = "-Mesopotamia";
-            Questions[i][3] = "-Eslovaquia";
-            Questions[i][4] = "-China";
-        }
-        else if (i == 4) {
-            Questions[i][1] = "-La imprenta y brujula";
-            Questions[i][2] = "-La rueda y escritura";
-            Questions[i][3] = "-Las maquinas a vapor";
-            Questions[i][4] = "-Las maquinas de produccion \nen masa";
-        }
+    //    if (i == 0) {
+    //        Questions[i][1] = "-La burguesia";
+    //        Questions[i][2] = "-La monarquia";
+    //        Questions[i][3] = "-El mercantilismo";
+    //        Questions[i][4] = "-El proletariado";
+    //    }
+    //    else if (i == 1) {
+    //        Questions[i][1] = "-Inglaterra";
+    //        Questions[i][2] = "-Grecia";
+    //        Questions[i][3] = "-Yugoslavia";
+    //        Questions[i][4] = "-Egipto";
+    //    }
+    //    else if (i == 2) {
+    //        Questions[i][1] = "-Florencia y Napoli";
+    //        Questions[i][2] = "-Amsterdam y Cracovia";
+    //        Questions[i][3] = "-Reims y Colonia";
+    //        Questions[i][4] = "-Milan y Lourdes";
+    //    }
+    //    else if (i == 3) {
+    //        Questions[i][1] = "-Estambul en Turquia";
+    //        Questions[i][2] = "-Mesopotamia";
+    //        Questions[i][3] = "-Eslovaquia";
+    //        Questions[i][4] = "-China";
+    //    }
+    //    else if (i == 4) {
+    //        Questions[i][1] = "-La imprenta y brujula";
+    //        Questions[i][2] = "-La rueda y escritura";
+    //        Questions[i][3] = "-Las maquinas a vapor";
+    //        Questions[i][4] = "-Las maquinas de produccion \nen masa";
+    //    }
 
-    }
+    //}
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     //---------------
     //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
-    if (iteradorH >= 5 || H[4] != -1)
+    if (iteradorH >= vectorHistoria.size() || H[vectorHistoria.size() - 1] != -1)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < vectorHistoria.size(); i++)
         {
             H[i] = -1;
             iteradorH = 0;
@@ -678,18 +682,18 @@ void NivelUnoScene::historia()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, H));
+    } while (checkpreg(random, H, vectorHistoria.size()));
     H[iteradorH] = random;
     iteradorH++;
 
-    pregunta->setString(Questions[random][0]);
+    pregunta->setString(vectorHistoria[random][0]);
 
     this->actualQuestion = make_pair("historia", random);
 
-    item1->setString(Questions[random][1]);
-    item2->setString(Questions[random][2]);
-    item3->setString(Questions[random][3]);
-    item4->setString(Questions[random][4]);
+    item1->setString(vectorHistoria[random][1]);
+    item2->setString(vectorHistoria[random][2]);
+    item3->setString(vectorHistoria[random][3]);
+    item4->setString(vectorHistoria[random][4]);
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
@@ -708,6 +712,103 @@ void NivelUnoScene::historia()
     item2->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[1])) - 25));
     item3->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[2])) - 25));
     item4->setPosition(Vec2(visibleSize.width / 2 + 160, (visibleSize.height / 2 + (20 * posiciones[3])) - 25));
+}
+
+void NivelUnoScene::cargarArte() {
+
+    ifstream arteIn("NivelUnoArte.txt", ios::in); //ubicación del archivo, entrada de datos
+
+    if (!arteIn) {
+        cout << "Error al abrir archivo NivelUnoArte.txt " << endl;
+        return;
+    }
+
+    string line;
+    while (getline(arteIn, line)) { //para leer línea por línea el archivo hasta el final
+
+        vector <string> Q; //contiene pregunta y sus 4 opciones
+        string pregunta = "";
+        string respuesta = "";
+        bool preguntaAlmacenada = 0;
+
+        for (int i = 0; i < line.size(); i++) { //recorrer letra por letra de cada línea
+
+            if (line.at(i) == ':' && !preguntaAlmacenada) { //cuando se llegue al final de la pregunta se almacena en vector
+                pregunta = pregunta + line.at(i);
+                Q.push_back(pregunta);
+                preguntaAlmacenada = 1;
+            }
+            else if (!preguntaAlmacenada) { //ir formando pregunta en string de pregunta
+                if (line.at(i) == '/') {
+                    pregunta = pregunta + "\n";
+                }
+                else
+                    pregunta = pregunta + line.at(i);
+            }
+            else if (line.at(i) == '-') { //al llegar al final de la respuesta, se almacena en vector y reinicia string
+                Q.push_back(respuesta);
+                respuesta = "";
+            }
+            else { //ir formando respuesta en string de respuesta
+                if (line.at(i) == '/')
+                    respuesta = respuesta + "\n";
+                else
+                    respuesta = respuesta + line.at(i);
+            }
+
+        }
+
+        this->vectorArte.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
+
+    }
+}
+
+void NivelUnoScene::cargarHistoria() {
+    ifstream historiaIn("NivelUnoHistoria.txt", ios::in); //ubicación del archivo, entrada de datos
+
+    if (!historiaIn) {
+        cout << "Error al abrir archivo NivelUnoHistoria.txt " << endl;
+        return;
+    }
+
+    string line;
+    while (getline(historiaIn, line)) { //para leer línea por línea el archivo hasta el final
+
+        vector <string> Q; //contiene pregunta y sus 4 opciones
+        string pregunta = "";
+        string respuesta = "";
+        bool preguntaAlmacenada = 0;
+
+        for (int i = 0; i < line.size(); i++) { //recorrer letra por letra de cada línea
+
+            if (line.at(i) == ':' && !preguntaAlmacenada) { //cuando se llegue al final de la pregunta se almacena en vector
+                pregunta = pregunta + line.at(i);
+                Q.push_back(pregunta);
+                preguntaAlmacenada = 1;
+            }
+            else if (!preguntaAlmacenada) { //ir formando pregunta en string de pregunta
+                if (line.at(i) == '/') {
+                    pregunta = pregunta + "\n";
+                }
+                else
+                    pregunta = pregunta + line.at(i);
+            }
+            else if (line.at(i) == '-') { //al llegar al final de la respuesta, se almacena en vector y reinicia string
+                Q.push_back(respuesta);
+                respuesta = "";
+            }
+            else { //ir formando respuesta en string de respuesta
+                if (line.at(i) == '/')
+                    respuesta = respuesta + "\n";
+                else
+                    respuesta = respuesta + line.at(i);
+            }
+
+        }
+
+        this->vectorHistoria.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
+
+    }
 }
 
 //Ambos metodos agregan los sprites de los puntajes

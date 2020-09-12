@@ -8,6 +8,8 @@ USING_NS_CC;
 USING_NS_CC_EXT;
 
 #include <utility>
+#include <vector>
+#include <fstream>
 
 class NivelUnoScene : public cocos2d::Layer
 {
@@ -45,7 +47,7 @@ private:
     bool checkrep(int, int[]);
     bool questionShown;
     //-------------
-    bool checkpreg(int, int[]);
+    bool checkpreg(int, int[], int);
     bool respuesta;
     //Iteradores y arreglos que manejan preguntas
     int iteradorA;
@@ -62,6 +64,12 @@ private:
     void historia();
     void politica();
     void ciencia();
+
+    void cargarArte();
+    void cargarHistoria();
+
+    std::vector<std::vector<std::string>> vectorArte;
+    std::vector<std::vector<std::string>> vectorHistoria;
 
     //Sprite que contiene la imagen con el título respectivo a cada categoría
     Sprite* actualCategory;
