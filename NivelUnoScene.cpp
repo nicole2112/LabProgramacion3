@@ -71,7 +71,7 @@ bool NivelUnoScene::init()
 
     //Crear el botón para girar la ruleta y posicionarlo
     ui::Button* botonS = ui::Button::create("images/P1.png", "images/P2.png");
-    botonS->setPosition(Vec2(visibleSize.width / 2 + 80, (visibleSize.height /3.7)));
+    botonS->setPosition(Vec2(visibleSize.width / 2 + 80, (visibleSize.height / 3.7)));
 
     //Añadirle evento al botón que hace girar la ruleta 
     botonS->addTouchEventListener(CC_CALLBACK_2(NivelUnoScene::spinR, this));
@@ -166,6 +166,8 @@ bool NivelUnoScene::init()
     //Funciones para cargar archivos de texto de cada categoría
     cargarArte();
     cargarHistoria();
+    cargarPolitica();
+    cargarCiencia();
 
     return true;
 }
@@ -433,54 +435,54 @@ void NivelUnoScene::ciencia()
 {
 
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Uno de los precursores \nfilosofo-cientifico del \nheliocentrismo: ";
-    Questions[1][0] = "Uno de los siguientes no es \nprecursor del metodo \ncientifico: ";
-    Questions[2][0] = "Es uno de los precursores del \npensamiento Moderno: ";
-    Questions[3][0] = "De los siguientes filosofos \nniega el geocentrismo: ";
-    Questions[4][0] = "Uno de los inventos que \nsuscito un conocimiento \nilimitado, fue el de \nGutenberg: ";
-    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
-    {
+    //string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
+    //Questions[0][0] = "Uno de los precursores \nfilosofo-cientifico del \nheliocentrismo: ";
+    //Questions[1][0] = "Uno de los siguientes no es \nprecursor del metodo \ncientifico: ";
+    //Questions[2][0] = "Es uno de los precursores del \npensamiento Moderno: ";
+    //Questions[3][0] = "De los siguientes filosofos \nniega el geocentrismo: ";
+    //Questions[4][0] = "Uno de los inventos que \nsuscito un conocimiento \nilimitado, fue el de \nGutenberg: ";
+    //for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
+    //{
 
-        if (i == 0) {
-            Questions[i][1] = "-Galileo Galilei";
-            Questions[i][2] = "-Tomas Moro";
-            Questions[i][3] = "-Platon";
-            Questions[i][4] = "-Ptolomeo";
-        }
-        else if (i == 1) {
-            Questions[i][1] = "-Nicolas Maquiavelo";
-            Questions[i][2] = "-Francis Bacon";
-            Questions[i][3] = "-Rene Descartes";
-            Questions[i][4] = "-Galileo Galilei";
-        }
-        else if (i == 2) {
-            Questions[i][1] = "-Rene Descartes";
-            Questions[i][2] = "-Isaac Newton";
-            Questions[i][3] = "-Leonardo Da Vinci";
-            Questions[i][4] = "-Erasmo de Roterdam";
-        }
-        else if (i == 3) {
-            Questions[i][1] = "-Nicolas Copernico";
-            Questions[i][2] = "-Tomas de Aquino";
-            Questions[i][3] = "-Aristoteles";
-            Questions[i][4] = "-Platon";
-        }
-        else if (i == 4) {
-            Questions[i][1] = "-La imprenta";
-            Questions[i][2] = "-El Astrolabio";
-            Questions[i][3] = "-La Nao y la Carabela";
-            Questions[i][4] = "-El Telescopio";
-        }
+    //    if (i == 0) {
+    //        Questions[i][1] = "-Galileo Galilei";
+    //        Questions[i][2] = "-Tomas Moro";
+    //        Questions[i][3] = "-Platon";
+    //        Questions[i][4] = "-Ptolomeo";
+    //    }
+    //    else if (i == 1) {
+    //        Questions[i][1] = "-Nicolas Maquiavelo";
+    //        Questions[i][2] = "-Francis Bacon";
+    //        Questions[i][3] = "-Rene Descartes";
+    //        Questions[i][4] = "-Galileo Galilei";
+    //    }
+    //    else if (i == 2) {
+    //        Questions[i][1] = "-Rene Descartes";
+    //        Questions[i][2] = "-Isaac Newton";
+    //        Questions[i][3] = "-Leonardo Da Vinci";
+    //        Questions[i][4] = "-Erasmo de Roterdam";
+    //    }
+    //    else if (i == 3) {
+    //        Questions[i][1] = "-Nicolas Copernico";
+    //        Questions[i][2] = "-Tomas de Aquino";
+    //        Questions[i][3] = "-Aristoteles";
+    //        Questions[i][4] = "-Platon";
+    //    }
+    //    else if (i == 4) {
+    //        Questions[i][1] = "-La imprenta";
+    //        Questions[i][2] = "-El Astrolabio";
+    //        Questions[i][3] = "-La Nao y la Carabela";
+    //        Questions[i][4] = "-El Telescopio";
+    //    }
 
-    }
+    //}
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     //---------------
     //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
-    if (iteradorC >= 5 || C[4] != -1)
+    if (iteradorC >= vectorCiencia.size() || C[vectorCiencia.size() - 1] != -1)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < vectorCiencia.size(); i++)
         {
             C[i] = -1;
             iteradorC = 0;
@@ -492,18 +494,18 @@ void NivelUnoScene::ciencia()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, C, 5));
+    } while (checkpreg(random, C, vectorCiencia.size()));
     C[iteradorC] = random;
     iteradorC++;
 
-    pregunta->setString(Questions[random][0]);
+    pregunta->setString(vectorCiencia[random][0]);
 
     this->actualQuestion = make_pair("ciencia", random);
 
-    item1->setString(Questions[random][1]);
-    item2->setString(Questions[random][2]);
-    item3->setString(Questions[random][3]);
-    item4->setString(Questions[random][4]);
+    item1->setString(vectorCiencia[random][1]);
+    item2->setString(vectorCiencia[random][2]);
+    item3->setString(vectorCiencia[random][3]);
+    item4->setString(vectorCiencia[random][4]);
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
@@ -528,54 +530,54 @@ void NivelUnoScene::ciencia()
 void NivelUnoScene::politica()
 {
     //Crea arreglo bidimensional tipo string donde se almacenan preguntas y respuestas
-    string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
-    Questions[0][0] = "Durante el renacimiento, el \nmodelo de gobierno es \nuno de los siguientes: ";
-    Questions[1][0] = "De los siguientes aconteci-\nmientos, seleccione el que \ninicia el periodo moderno: ";
-    Questions[2][0] = "Durante el siglo XV, la \nsociedad se estratifica en 3 \nestamentos definidos: ";
-    Questions[3][0] = "Autor del realismo politico, \nbasado en un orden definido, \nexplicacion y sugerencias \nde como gobernar: ";
-    Questions[4][0] = "Terminada la edad media, \nen el contexto de la \npolitica resulta que: ";
-    for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
-    {
+    //string Questions[5][5];//Prototipo: 5 preguntas, 4 respuestas por pregunta
+    //Questions[0][0] = "Durante el renacimiento, el \nmodelo de gobierno es \nuno de los siguientes: ";
+    //Questions[1][0] = "De los siguientes aconteci-\nmientos, seleccione el que \ninicia el periodo moderno: ";
+    //Questions[2][0] = "Durante el siglo XV, la \nsociedad se estratifica en 3 \nestamentos definidos: ";
+    //Questions[3][0] = "Autor del realismo politico, \nbasado en un orden definido, \nexplicacion y sugerencias \nde como gobernar: ";
+    //Questions[4][0] = "Terminada la edad media, \nen el contexto de la \npolitica resulta que: ";
+    //for (int i = 0; i < 5; i++) //la primera opción siempre será la respuesta correcta
+    //{
 
-        if (i == 0) {
-            Questions[i][1] = "-Monarquia Absoluta";
-            Questions[i][2] = "-Tirania Republicana";
-            Questions[i][3] = "-Democracia Participativa";
-            Questions[i][4] = "-Liberalismo Politico";
-        }
-        else if (i == 1) {
-            Questions[i][1] = "-Tratado de paz de Westfalia";
-            Questions[i][2] = "-Toma de Constantinopla";
-            Questions[i][3] = "-Toma de la Bastilla";
-            Questions[i][4] = "-La ruta de la seda";
-        }
-        else if (i == 2) {
-            Questions[i][1] = "-Nobleza, clero y estado llano";
-            Questions[i][2] = "-Clase Media, baja y alta";
-            Questions[i][3] = "-Artesanos, guardianes y \ngobernantes";
-            Questions[i][4] = "-Presidente, Ministro y estado";
-        }
-        else if (i == 3) {
-            Questions[i][1] = "-Nicolas Maquiavelo";
-            Questions[i][2] = "-Tomas Moro";
-            Questions[i][3] = "-Jean Bodin";
-            Questions[i][4] = "-Erasmo de Rotterdam";
-        }
-        else if (i == 4) {
-            Questions[i][1] = "-La Iglesia pierde el \npapel rector.";
-            Questions[i][2] = "-La Iglesia resalta su poder.";
-            Questions[i][3] = "-La Iglesia evangelica \nentra en politica.";
-            Questions[i][4] = "-No ocurrio nada.";
-        }
+    //    if (i == 0) {
+    //        Questions[i][1] = "-Monarquia Absoluta";
+    //        Questions[i][2] = "-Tirania Republicana";
+    //        Questions[i][3] = "-Democracia Participativa";
+    //        Questions[i][4] = "-Liberalismo Politico";
+    //    }
+    //    else if (i == 1) {
+    //        Questions[i][1] = "-Tratado de paz de Westfalia";
+    //        Questions[i][2] = "-Toma de Constantinopla";
+    //        Questions[i][3] = "-Toma de la Bastilla";
+    //        Questions[i][4] = "-La ruta de la seda";
+    //    }
+    //    else if (i == 2) {
+    //        Questions[i][1] = "-Nobleza, clero y estado llano";
+    //        Questions[i][2] = "-Clase Media, baja y alta";
+    //        Questions[i][3] = "-Artesanos, guardianes y \ngobernantes";
+    //        Questions[i][4] = "-Presidente, Ministro y estado";
+    //    }
+    //    else if (i == 3) {
+    //        Questions[i][1] = "-Nicolas Maquiavelo";
+    //        Questions[i][2] = "-Tomas Moro";
+    //        Questions[i][3] = "-Jean Bodin";
+    //        Questions[i][4] = "-Erasmo de Rotterdam";
+    //    }
+    //    else if (i == 4) {
+    //        Questions[i][1] = "-La Iglesia pierde el \npapel rector.";
+    //        Questions[i][2] = "-La Iglesia resalta su poder.";
+    //        Questions[i][3] = "-La Iglesia evangelica \nentra en politica.";
+    //        Questions[i][4] = "-No ocurrio nada.";
+    //    }
 
-    }
+    //}
 
     //Luego de crear el arreglo, se crea un Label con el texto guardado al azar
     //---------------
     //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
-    if (iteradorP >= 5 || P[4] != -1)
+    if (iteradorP >= vectorPolitica.size() || P[vectorPolitica.size() - 1] != -1)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < vectorPolitica.size(); i++)
         {
             P[i] = -1;
             iteradorP = 0;
@@ -587,18 +589,18 @@ void NivelUnoScene::politica()
     do
     {
         random = (rand() % 5);
-    } while (checkpreg(random, P, 5));
+    } while (checkpreg(random, P, vectorPolitica.size()));
     P[iteradorP] = random;
     iteradorP++;
 
-    pregunta->setString(Questions[random][0]);
+    pregunta->setString(vectorPolitica[random][0]);
 
     this->actualQuestion = make_pair("politica", random);
 
-    item1->setString(Questions[random][1]);
-    item2->setString(Questions[random][2]);
-    item3->setString(Questions[random][3]);
-    item4->setString(Questions[random][4]);
+    item1->setString(vectorPolitica[random][1]);
+    item2->setString(vectorPolitica[random][2]);
+    item3->setString(vectorPolitica[random][3]);
+    item4->setString(vectorPolitica[random][4]);
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
@@ -807,6 +809,102 @@ void NivelUnoScene::cargarHistoria() {
         }
 
         this->vectorHistoria.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
+
+    }
+}
+
+void NivelUnoScene::cargarCiencia() {
+    ifstream cienciaIn("NivelUnoCiencia.txt", ios::in); //ubicación del archivo, entrada de datos
+
+    if (!cienciaIn) {
+        cout << "Error al abrir archivo NivelUnoCiencia.txt " << endl;
+        return;
+    }
+
+    string line;
+    while (getline(cienciaIn, line)) { //para leer línea por línea el archivo hasta el final
+
+        vector <string> Q; //contiene pregunta y sus 4 opciones
+        string pregunta = "";
+        string respuesta = "";
+        bool preguntaAlmacenada = 0;
+
+        for (int i = 0; i < line.size(); i++) { //recorrer letra por letra de cada línea
+
+            if (line.at(i) == ':' && !preguntaAlmacenada) { //cuando se llegue al final de la pregunta se almacena en vector
+                pregunta = pregunta + line.at(i);
+                Q.push_back(pregunta);
+                preguntaAlmacenada = 1;
+            }
+            else if (!preguntaAlmacenada) { //ir formando pregunta en string de pregunta
+                if (line.at(i) == '/') {
+                    pregunta = pregunta + "\n";
+                }
+                else
+                    pregunta = pregunta + line.at(i);
+            }
+            else if (line.at(i) == '-') { //al llegar al final de la respuesta, se almacena en vector y reinicia string
+                Q.push_back(respuesta);
+                respuesta = "";
+            }
+            else { //ir formando respuesta en string de respuesta
+                if (line.at(i) == '/')
+                    respuesta = respuesta + "\n";
+                else
+                    respuesta = respuesta + line.at(i);
+            }
+
+        }
+
+        this->vectorCiencia.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
+
+    }
+}
+
+void NivelUnoScene::cargarPolitica() {
+    ifstream politicaIn("NivelUnoPolitica.txt", ios::in); //ubicación del archivo, entrada de datos
+
+    if (!politicaIn) {
+        cout << "Error al abrir archivo NivelUnoPolitica.txt " << endl;
+        return;
+    }
+
+    string line;
+    while (getline(politicaIn, line)) { //para leer línea por línea el archivo hasta el final
+
+        vector <string> Q; //contiene pregunta y sus 4 opciones
+        string pregunta = "";
+        string respuesta = "";
+        bool preguntaAlmacenada = 0;
+
+        for (int i = 0; i < line.size(); i++) { //recorrer letra por letra de cada línea
+
+            if (line.at(i) == ':' && !preguntaAlmacenada) { //cuando se llegue al final de la pregunta se almacena en vector
+                pregunta = pregunta + line.at(i);
+                Q.push_back(pregunta);
+                preguntaAlmacenada = 1;
+            }
+            else if (!preguntaAlmacenada) { //ir formando pregunta en string de pregunta
+                if (line.at(i) == '/') {
+                    pregunta = pregunta + "\n";
+                }
+                else
+                    pregunta = pregunta + line.at(i);
+            }
+            else if (line.at(i) == '-') { //al llegar al final de la respuesta, se almacena en vector y reinicia string
+                Q.push_back(respuesta);
+                respuesta = "";
+            }
+            else { //ir formando respuesta en string de respuesta
+                if (line.at(i) == '/')
+                    respuesta = respuesta + "\n";
+                else
+                    respuesta = respuesta + line.at(i);
+            }
+
+        }
+
+        this->vectorPolitica.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
 
     }
 }
