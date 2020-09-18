@@ -107,6 +107,10 @@ bool KantScene::init()
         this->addChild(bgItemD, 1);
     }
 
+    auto teclas = Sprite::create("Images/teclasJugador1.png");
+    teclas->setPosition(Vec2(origin.x + visibleSize.width / 2 - 200, origin.y + visibleSize.height / 2 + 110));
+    this->addChild(teclas, 1);
+
     //Cargar preguntas
     cargarPreguntasEpis();
 
@@ -223,7 +227,7 @@ void KantScene::GoBack(cocos2d::Ref* pSender)
 void KantScene::cargarPreguntasEpis() {
 
 
-    ifstream kantIn("PreguntasKantScene.txt", ios::in); //ubicación del archivo, entrada de datos
+    ifstream kantIn("KantScenePreguntas.txt", ios::in); //ubicación del archivo, entrada de datos
 
     if (!kantIn) {
         cout << "Error al abrir archivo NivelUnoArte.txt " << endl;

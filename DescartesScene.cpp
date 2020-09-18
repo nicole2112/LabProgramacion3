@@ -106,6 +106,10 @@ bool DescartesScene::init()
         this->addChild(bgItemD, 1);
     }
 
+    auto teclas = Sprite::create("Images/teclasJugador1.png");
+    teclas->setPosition(Vec2(origin.x + visibleSize.width / 2 - 200, origin.y + visibleSize.height / 2 + 110));
+    this->addChild(teclas, 1);
+
     //Cargar preguntas
     cargarPreguntasEpis();
 
