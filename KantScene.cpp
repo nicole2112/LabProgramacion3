@@ -40,7 +40,7 @@ bool KantScene::init()
     this->addChild(aula, -2);
 
     auto kant = Sprite::create("Images/cartoonKant.png");
-    kant->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 45));
+    kant->setPosition(Vec2(origin.x + visibleSize.width / 8, origin.y + visibleSize.height / 2 - 45));
     this->addChild(kant, -1);
     
     //================================================
