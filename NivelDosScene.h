@@ -9,6 +9,10 @@
 USING_NS_CC;
 USING_NS_CC_EXT;
 
+#include <utility>
+#include <vector>
+#include <fstream>
+
 class NivelDosScene : public cocos2d::Layer
 {
 public:
@@ -29,6 +33,8 @@ private:
     // Funciones para inicializar teclado y manejar sus eventos
     void inicializarTeclado(void);
     void presionarTecla(EventKeyboard::KeyCode key, Event* event);
+
+    int iteradorepis;
 
     Sprite* titulo;
 
@@ -52,6 +58,12 @@ private:
 
     bool checkrep(int, int[]);
     void revisarRespuesta();
+    //---------------Marvin, Agregue metodos para las preguntas y text file
+    bool checkpreg(int, int[], int);
+    std::vector<std::vector<std::string>> vectorEpis;
+    void cargarPreguntasEpis();
+    int A[8];
+
 
     void p1PierdeVida();
     void p2PierdeVida();
@@ -69,3 +81,4 @@ private:
     int vidaP2;
 };
 #endif // __NIVELDOS_SCENE_H__
+
