@@ -40,7 +40,7 @@ bool KantScene::init()
     this->addChild(aula, -2);
 
     auto kant = Sprite::create("Images/cartoonKant.png");
-    kant->setPosition(Vec2(origin.x + visibleSize.width / 8, origin.y + visibleSize.height / 2 - 45));
+    kant->setPosition(Vec2(origin.x + visibleSize.width / 2 - 150, origin.y + visibleSize.height / 2 - 45));
     this->addChild(kant, -1);
     
     //================================================
@@ -52,10 +52,11 @@ bool KantScene::init()
     this->addChild(lbPregunta, 2);
 
     //Inicializar opciones de respuestas
-    item1 = Label::createWithTTF(" ", "fonts/arial.ttf", 12);
+    item1 = Label::createWithTTF("", "fonts/arial.ttf", 12);
     item1->setColor(Color3B::BLACK);
     item1->setAlignment(TextHAlignment::LEFT);
     item1->setAnchorPoint(Vec2(0, 0));
+    item1->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     this->addChild(item1, 2);
 
     item2 = Label::createWithTTF(" ", "fonts/arial.ttf", 12);
@@ -110,6 +111,19 @@ bool KantScene::init()
 
     //inicializar eventos del teclado
     inicializarTeclado();
+
+    this->respCorrecta = 0;
+    this->respondido = true;
+
+    //se crea el sprite que da feedback a respuesta correcta o incorrecta
+    feedback = Sprite::create("images/empty.png");
+    if (feedback != nullptr) {
+        feedback->setPosition(Vec2(origin.x + 400, visibleSize.height / 2 - 100));
+        this->addChild(feedback, 3);
+    }
+
+    this->cambiarEscena = false;
+    this->contadorPreguntas = 0;
     
     return true;
 }
@@ -132,12 +146,65 @@ void KantScene::presionarTecla(EventKeyboard::KeyCode key, Event* event)
     switch (key)
     {
     case EventKeyboard::KeyCode::KEY_ESCAPE:
-        KantScene::GoBack(this);
+            KantScene::GoBack(this);
         break;
     case EventKeyboard::KeyCode::KEY_ENTER:
-        KantScene::showQuestion(this);
+        if (this->cambiarEscena) {
+            if(this->contadorPreguntas > this->vectorEpis.size())
+                KantScene::showDescartes(this);
+            else {
+                this->finEscena();
+                contadorPreguntas++;
+            }
+        }
+        else
+            KantScene::showQuestion(this);
+        break;
+    case EventKeyboard::KeyCode::KEY_1:
+
+        if (this->respCorrecta == 1) {
+            this->respuestaCorrecta();
+        }
+        else {
+            this->respuestaIncorrecta();
+        }
+
+        break;
+    case EventKeyboard::KeyCode::KEY_2:
+
+        if (this->respCorrecta == 2) {
+            this->respuestaCorrecta();
+        }
+        else {
+            this->respuestaIncorrecta();
+        }
+
+        break;
+    case EventKeyboard::KeyCode::KEY_3:
+        if (this->respCorrecta == 3) {
+            this->respuestaCorrecta();
+        }
+        else {
+            this->respuestaIncorrecta();
+        }
+        break;
+    case EventKeyboard::KeyCode::KEY_4:
+       
+        if (this->respCorrecta == 4) {
+            this->respuestaCorrecta();
+        }
+        else {
+            this->respuestaIncorrecta();
+        }
+
         break;
     }
+}
+
+void KantScene::showDescartes(cocos2d::Ref* pSender)
+{
+    auto scene = DescartesScene::createScene();
+    Director::getInstance()->replaceScene(TransitionSlideInR::create(1, scene));
 }
 
 void KantScene::GoBack(cocos2d::Ref* pSender)
@@ -148,51 +215,51 @@ void KantScene::GoBack(cocos2d::Ref* pSender)
 
 void KantScene::cargarPreguntasEpis() {
 
-    ifstream episIn("KantScenePreguntas.txt", ios::in);
 
-    if (!episIn)
-    {
-        cout << "Error al abrir archivo KantScenePreguntas.txt" << endl;
+    ifstream kantIn("PreguntasKantScene.txt", ios::in); //ubicación del archivo, entrada de datos
+
+    if (!kantIn) {
+        cout << "Error al abrir archivo NivelUnoArte.txt " << endl;
         return;
     }
 
     string line;
+    while (getline(kantIn, line)) { //para leer línea por línea el archivo hasta el final
 
-    while (getline(episIn, line)) {
-
-        vector <string> Q;
+        vector <string> Q; //contiene pregunta y sus 4 opciones
         string pregunta = "";
         string respuesta = "";
         bool preguntaAlmacenada = 0;
 
-        for (int i = 0; i < line.size(); i++) {
-            if (line.at(i) == ':' && !preguntaAlmacenada) {
+        for (int i = 0; i < line.size(); i++) { //recorrer letra por letra de cada línea
+
+            if (line.at(i) == ':' && !preguntaAlmacenada) { //cuando se llegue al final de la pregunta se almacena en vector
                 pregunta = pregunta + line.at(i);
                 Q.push_back(pregunta);
                 preguntaAlmacenada = 1;
             }
-            else if (!preguntaAlmacenada) {
+            else if (!preguntaAlmacenada) { //ir formando pregunta en string de pregunta
                 if (line.at(i) == '/') {
                     pregunta = pregunta + "\n";
                 }
-                else {
+                else
                     pregunta = pregunta + line.at(i);
-                }
             }
-            else if (line.at(i) == '-') {
-
+            else if (line.at(i) == '-') { //al llegar al final de la respuesta, se almacena en vector y reinicia string
                 Q.push_back(respuesta);
                 respuesta = "";
             }
-            else {
+            else { //ir formando respuesta en string de respuesta
                 if (line.at(i) == '/')
                     respuesta = respuesta + "\n";
                 else
                     respuesta = respuesta + line.at(i);
-
             }
+
         }
-        this->vectorEpis.push_back(Q);
+
+        this->vectorEpis.push_back(Q); //Guardar vector con formato: {pregunta, opcion1, opcion2, opcion3, opcion4}
+
     }
 }
 
@@ -214,6 +281,22 @@ bool KantScene::checkrep(int n, int num[])
 
 void KantScene::showQuestion(Ref* sender) 
 {
+    //Validar que se haya contestado la pregunta
+    if (!this->respondido)
+        return;
+
+    //reiniciar variable
+    this->respondido = false;
+
+    this->contadorPreguntas++;
+
+    //Cuando ya se hayan pasado todas las preguntas
+    if (contadorPreguntas == vectorEpis.size())
+        this->cambiarEscena = true;
+
+    feedback->setTexture("images/empty.png");
+
+    //SE LLENA EL ARREGLO PARA VERIFICAR LAS PREGUNTAS
     if (iteradorepis >= vectorEpis.size() || A[vectorEpis.size() - 1] != -1)
     {
         for (int i = 0; i < vectorEpis.size(); i++)
@@ -223,23 +306,16 @@ void KantScene::showQuestion(Ref* sender)
         }
     }
 
+    //SE OBTIENE UN NUMERO RANDOM Y SE REVISA QUE NO ESTE EN EL ARREGLO
     int random = 0;
 
     do {
-        random = (rand() % 8);
+        random = (rand() % vectorEpis.size());
+
     } while (checkpreg(random, A, vectorEpis.size()));
     A[iteradorepis] = random;
     iteradorepis++;
 
-    if (A[8] != NULL) {
-
-        for (int i = 0; i <= 8; i++) {
-            A[i] = NULL;
-            iteradorepis = 0;
-
-        }
-
-    }
 
     lbPregunta->setString(vectorEpis[random][0]);
 
@@ -248,11 +324,10 @@ void KantScene::showQuestion(Ref* sender)
     item3->setString(vectorEpis[random][3]);
     item4->setString(vectorEpis[random][4]);
 
-    /*bgItemA->setVisible(true);
+    bgItemA->setVisible(true);
     bgItemB->setVisible(true);
     bgItemC->setVisible(true);
-
-    bgItemD->setVisible(true);*/
+    bgItemD->setVisible(true);
 
     //Para que las posiciones de los botones sean de manera aleatoria
     int posiciones[4]; //arreglo que contiene las posiciones ya obtenidas
@@ -270,4 +345,46 @@ void KantScene::showQuestion(Ref* sender)
     item2->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[1])));
     item3->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[2])));
     item4->setPosition(Vec2(origin.x + visibleSize.width / 2 - 90, origin.y + visibleSize.height / 2 - (40 * posiciones[3])));
+
+    //La posicion de la primera respuesta sera la correcta
+    this->respCorrecta = posiciones[0] + 1;
 }
+
+void KantScene::respuestaCorrecta() {
+    if (!this->respondido) {
+        this->respondido = true;
+        feedback->setTexture("Images/cheersCorrect.png");
+    }
+}
+
+void KantScene::respuestaIncorrecta() {
+    if (!this->respondido) {
+        this->respondido = true;
+        feedback->setTexture("Images/cheers1.png");
+    }
+}
+
+void KantScene::finEscena() {
+    bgItemA->setVisible(false);
+    bgItemB->setVisible(false);
+    bgItemC->setVisible(false);
+    bgItemD->setVisible(false);
+    item1->setVisible(false);
+    item2->setVisible(false);
+    item3->setVisible(false);
+    item4->setVisible(false);
+    feedback->setVisible(false);
+    lbPregunta->setVisible(false);
+
+    auto lbGanar = Label::createWithTTF("¡Buen trabajo!", "fonts/arial.ttf", 25);
+    lbGanar->setColor(Color3B::BLACK);
+    lbGanar->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + 70));
+    this->addChild(lbGanar, 2);
+
+    auto lbSalir = Label::createWithTTF("Presione Enter.", "fonts/arial.ttf", 14);
+    lbSalir->setColor(Color3B::BLACK);
+    lbSalir->setAlignment(TextHAlignment::CENTER);
+    lbSalir->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    this->addChild(lbSalir, 2);
+}
+
