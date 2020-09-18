@@ -35,20 +35,35 @@ public:
     Sprite* bgItemC;
     Sprite* bgItemD;
 
+    //Para guardar la respuesta correcta
+    int respCorrecta;
+
+    bool respondido;
+
     //Variable que determina si se cambia de escuela
     bool cambiarEscena;
+    int contadorPreguntas;
+
+    void finEscena();
     
     // Funciones para inicializar teclado y manejar sus eventos
     void inicializarTeclado(void);
     void presionarTecla(EventKeyboard::KeyCode key, Event* event);
 
+    Sprite* feedback;
+    void respuestaCorrecta();
+    void respuestaIncorrecta();
+
     void GoBack(Ref* pSender);
+    void showDescartes(Ref* pSender);
+
     std::vector<std::vector<std::string>> vectorEpis;
     void cargarPreguntasEpis();
     void showQuestion(Ref*);
     bool checkrep(int, int[]);
     bool checkpreg(int, int[], int);
-    int A[8];
+
+    int A[6];
 };
 
 #endif // !KANT_SCENE_H

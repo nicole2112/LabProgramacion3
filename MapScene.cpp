@@ -121,6 +121,12 @@ bool MapScene::init()
         this->addChild(tituloNivelDos, 1);
     }
 
+    auto tituloNivelTres = Sprite::create("Images/tituloNivel3.jpg");
+    if (tituloNivelTres != nullptr) {
+        tituloNivelTres->setPosition(Vec2(origin.x + visibleSize.width / 2 + 80, origin.y + visibleSize.height / 2 + 80));
+        this->addChild(tituloNivelTres, 1);
+    }
+
     menuItem1->setColor(Color3B::GREEN);
     menuItem2->setColor(Color3B::BLACK);
     menuItem3->setColor(Color3B::BLACK);

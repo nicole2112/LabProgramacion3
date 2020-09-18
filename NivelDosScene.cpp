@@ -171,9 +171,9 @@ bool NivelDosScene::init()
     respuestaP1 = true;
     respuestaP2 = true;
     prioridad = 0;
-    int correcta = 0;
-    int R1 = 0;
-    int R2 = 0;
+    correcta = 0;
+    R1 = 0;
+    R2 = 0;
 
   
 
