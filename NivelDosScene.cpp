@@ -158,6 +158,10 @@ bool NivelDosScene::init()
 
     this->vidaP1 = 5;
     this->vidaP2 = 5;
+
+    //Marvin-- Agregando cuestion de texto a preguntas 
+    cargarPreguntasEpis();
+
     
     //inicializar eventos del teclado
     inicializarTeclado();
@@ -171,6 +175,7 @@ bool NivelDosScene::init()
     int R1 = 0;
     int R2 = 0;
 
+  
 
     return true;
 }
@@ -340,6 +345,66 @@ bool NivelDosScene::checkrep(int n, int num[])
     return false;
 }
 
+bool NivelDosScene::checkpreg(int n, int num[], int size)
+{
+    for (int i = 0; i < size; i++)
+        if (n == num[i])
+            return true;
+    return false;
+}
+
+void NivelDosScene::cargarPreguntasEpis() {
+
+    ifstream episIn("NivelDosPreguntas.txt", ios::in);
+
+    if (!episIn) {
+        cout << "Error al abrir archivo NivelDosPreguntas.txt" << endl;
+        return;
+    }
+
+    string line;
+
+    while (getline(episIn, line)) {
+
+        vector <string> Q;
+        string pregunta = "";
+        string respuesta = "";
+        bool preguntaAlmacenada = 0;
+
+        for (int i = 0; i < line.size(); i++) {
+            if (line.at(i) == ':' && !preguntaAlmacenada) {
+                pregunta = pregunta + line.at(i);
+                Q.push_back(pregunta);
+                preguntaAlmacenada = 1;
+            }
+            else if (!preguntaAlmacenada) {
+                if (line.at(i) == '/') {
+                    pregunta = pregunta + "\n";
+                }
+                else {
+                    pregunta = pregunta + line.at(i);
+                }
+            }
+            else if (line.at(i) == '-') {
+
+                Q.push_back(respuesta);
+                respuesta = "";
+            }
+            else {
+                if (line.at(i) == '/')
+                    respuesta = respuesta + "\n";
+                else
+                    respuesta = respuesta + line.at(i);
+
+            }
+        }
+
+        this->vectorEpis.push_back(Q);
+    }
+
+}
+
+
 void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
 
     if (!respuestaP1 || !respuestaP2) //validar que ambos contesten la pregunta para pasar a siguiente
@@ -352,13 +417,40 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     prioridad = 0;
     R1 = 0;
     R2 = 0;
+    
+    if (iteradorepis >= vectorEpis.size() || A[vectorEpis.size() - 1] != -1)
+    {
+        for (int i = 0; i < vectorEpis.size(); i++)
+        {
+            A[i] = -1;
+            iteradorepis = 0;
+        }
+    }
 
-    this->lbPregunta->setString("El padre de la filosofia es considerado ser:");
+    int random = 0;
 
-    item1->setString("Socrates");
-    item2->setString("Rene Descartes");
-    item3->setString("Aristoteles");
-    item4->setString("Heraclito");
+    do {
+        random = (rand() % 8);
+    } while (checkpreg(random, A, vectorEpis.size()));
+    A[iteradorepis] = random;
+    iteradorepis++;
+
+    if (A [8] != NULL) {
+
+        for (int i = 0; i <= 8; i++){
+            A[i] = NULL;
+            iteradorepis = 0;
+
+        }
+
+    }
+
+    lbPregunta->setString(vectorEpis[random][0]);
+
+    item1->setString(vectorEpis[random][1]);
+    item2->setString(vectorEpis[random][2]);
+    item3->setString(vectorEpis[random][3]);
+    item4->setString(vectorEpis[random][4]);
 
     bgItemA->setVisible(true);
     bgItemB->setVisible(true);
@@ -386,6 +478,7 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     //La posicion de la primera respuesta sera la correcta
     correcta = posiciones[0] + 1;
 }
+
 
 void NivelDosScene::GoBack(cocos2d::Ref* pSender) {
     auto scene = MapScene::createScene();
