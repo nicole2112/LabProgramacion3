@@ -18,6 +18,37 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(DescartesScene);
+
+    //====================
+    Point origin;
+    Size visibleSize;
+    int iteradorepis;
+
+    Label* lbPregunta;
+    Label* item1;
+    Label* item2;
+    Label* item3;
+    Label* item4;
+
+    Sprite* bgItemA;
+    Sprite* bgItemB;
+    Sprite* bgItemC;
+    Sprite* bgItemD;
+
+    //Variable que determina si se cambia de escuela
+    bool cambiarEscena;
+
+    // Funciones para inicializar teclado y manejar sus eventos
+    void inicializarTeclado(void);
+    void presionarTecla(EventKeyboard::KeyCode key, Event* event);
+
+    void GoBack(Ref* pSender);
+    std::vector<std::vector<std::string>> vectorEpis;
+    void cargarPreguntasEpis();
+    void showQuestion(Ref*);
+    bool checkrep(int, int[]);
+    bool checkpreg(int, int[], int);
+    int A[5];
 };
 
 #endif // !DESCARTES_SCENE_H
