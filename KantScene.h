@@ -10,7 +10,7 @@ USING_NS_CC_EXT;
 
 class KantScene : public cocos2d::Layer {
 public:
-    // there's no 'id' in cpp, so we recommend returning the class instance pointer
+     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -61,9 +61,9 @@ public:
     void cargarPreguntasEpis();
     void showQuestion(Ref*);
     bool checkrep(int, int[]);
-    bool checkpreg(int, int[], int);
+    bool checkpreg(int, std::vector<int>, int);
 
-    int A[6];
+    std::vector<int> A;
 };
 
 #endif // !KANT_SCENE_H

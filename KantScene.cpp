@@ -110,6 +110,12 @@ bool KantScene::init()
     //Cargar preguntas
     cargarPreguntasEpis();
 
+    for (int i = 0; i < vectorEpis.size(); i++)
+    {
+        A.push_back(-1);
+        iteradorepis = 0;
+    }
+
     //inicializar eventos del teclado
     inicializarTeclado();
 
@@ -264,7 +270,7 @@ void KantScene::cargarPreguntasEpis() {
     }
 }
 
-bool KantScene::checkpreg(int n, int num[], int size)
+bool KantScene::checkpreg(int n, std::vector<int> num, int size)
 {
     for (int i = 0; i < size; i++)
         if (n == num[i])

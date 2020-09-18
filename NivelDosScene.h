@@ -59,10 +59,10 @@ private:
     bool checkrep(int, int[]);
     void revisarRespuesta();
     //---------------Marvin, Agregue metodos para las preguntas y text file
-    bool checkpreg(int, int[], int);
+    bool checkpreg(int, std::vector<int>, int);
     std::vector<std::vector<std::string>> vectorEpis;
     void cargarPreguntasEpis();
-    int A[8];
+    std::vector<int> A;
 
 
     void p1PierdeVida();

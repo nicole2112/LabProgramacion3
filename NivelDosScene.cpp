@@ -159,10 +159,15 @@ bool NivelDosScene::init()
     this->vidaP1 = 5;
     this->vidaP2 = 5;
 
-    //Marvin-- Agregando cuestion de texto a preguntas 
+    //Agregando de texto a preguntas 
     cargarPreguntasEpis();
 
-    
+    for (int i = 0; i < vectorEpis.size(); i++)
+    {
+        A.push_back(-1);
+        iteradorepis = 0;
+    }
+
     //inicializar eventos del teclado
     inicializarTeclado();
 
@@ -345,7 +350,7 @@ bool NivelDosScene::checkrep(int n, int num[])
     return false;
 }
 
-bool NivelDosScene::checkpreg(int n, int num[], int size)
+bool NivelDosScene::checkpreg(int n, std::vector<int> num, int size)
 {
     for (int i = 0; i < size; i++)
         if (n == num[i])
@@ -402,6 +407,7 @@ void NivelDosScene::cargarPreguntasEpis() {
         this->vectorEpis.push_back(Q);
     }
 
+    episIn.close();
 }
 
 
@@ -430,20 +436,10 @@ void NivelDosScene::showQuestion(cocos2d::Ref* sender) {
     int random = 0;
 
     do {
-        random = (rand() % 8);
+        random = (rand() % vectorEpis.size());
     } while (checkpreg(random, A, vectorEpis.size()));
     A[iteradorepis] = random;
     iteradorepis++;
-
-    if (A [8] != NULL) {
-
-        for (int i = 0; i <= 8; i++){
-            A[i] = NULL;
-            iteradorepis = 0;
-
-        }
-
-    }
 
     lbPregunta->setString(vectorEpis[random][0]);
 

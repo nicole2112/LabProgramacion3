@@ -76,15 +76,11 @@ bool NivelTresScene::init()
     mapa->setPosition(Point(0, 0));
     this->addChild(mapa, 1);
 
-    //David
-    auto label = Label::createWithTTF("TERCER JUEGO", "fonts/Marker Felt.ttf", 24);
-    if (label != nullptr) {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-            origin.y + visibleSize.height - label->getContentSize().height));
-        label->setColor(Color3B::BLACK);
-        // add the label as a child to this layer
-        this->addChild(label, 1);
+    //Título
+    Sprite* titulo = Sprite::create("Images/tituloNivel3Escena.jpg");
+    if (titulo != nullptr) {
+        titulo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - titulo->getContentSize().height + 20));
+        this->addChild(titulo, 1);
     }
 
 
