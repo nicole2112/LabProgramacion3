@@ -22,6 +22,7 @@ public:
 
     Point origin;
     Size visibleSize;
+    Sprite* ImagenIntro;
 
     // Funciones para inicializar teclado y manejar sus eventos
     void inicializarTeclado(void);
