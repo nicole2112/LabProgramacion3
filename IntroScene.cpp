@@ -40,6 +40,13 @@ bool IntroScene::init()
     origin = Director::getInstance()->getVisibleOrigin();
 
     inicializarTeclado();
+    ImagenIntro = Sprite::create("images/test.png");  
+    ImagenIntro->setPosition(Vec2(visibleSize.width/2,visibleSize.height-800));
+    ImagenIntro->setVisible(true);
+    this->addChild(ImagenIntro, 1);
+    int positionImg = visibleSize.height - 800;
+    auto action = MoveBy::create(20, Point(0, 2000));
+    ImagenIntro->runAction(action);
 
 }
 
