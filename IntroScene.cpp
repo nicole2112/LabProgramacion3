@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <cocos2d.h>
+#include <cocos\editor-support\cocostudio\SimpleAudioEngine.h>
 USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace ui;
@@ -40,14 +41,21 @@ bool IntroScene::init()
     origin = Director::getInstance()->getVisibleOrigin();
 
     inicializarTeclado();
-    ImagenIntro = Sprite::create("images/test.png");  
-    ImagenIntro->setPosition(Vec2(visibleSize.width/2,visibleSize.height-800));
+    ImagenIntro = Sprite::create("images/test.png");
+    ImagenIntro->setPosition(Vec2(visibleSize.width / 2 , visibleSize.height - 800));
     ImagenIntro->setVisible(true);
     this->addChild(ImagenIntro, 1);
-    int positionImg = visibleSize.height - 800;
-    auto action = MoveBy::create(20, Point(0, 2000));
+    int positionImg = visibleSize.height - 8000;
+    auto action = MoveBy::create(70, Point(0, 2000));
     ImagenIntro->runAction(action);
 
+
+    
+
+}
+
+void IntroScene::stopMusic(float m) {
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 }
 
 //==============================================
@@ -61,6 +69,9 @@ void IntroScene::inicializarTeclado() {
     escuchador->onKeyReleased = CC_CALLBACK_2(IntroScene::presionarTecla, this);
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(escuchador, this);
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/StarWars.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("audio/StarWars.mp3");
 }
 
 void IntroScene::presionarTecla(EventKeyboard::KeyCode key, Event* event)
@@ -68,6 +79,7 @@ void IntroScene::presionarTecla(EventKeyboard::KeyCode key, Event* event)
     switch (key)
     {
     case EventKeyboard::KeyCode::KEY_ENTER:
+        this->schedule(CC_SCHEDULE_SELECTOR(IntroScene::stopMusic));
         GoMainMenu(this);
         break;
     }
