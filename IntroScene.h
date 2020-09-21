@@ -29,7 +29,9 @@ public:
     void presionarTecla(EventKeyboard::KeyCode key, Event* event);
 
     void GoMainMenu(Ref* pSender);
+    void stopMusic(float);
 
 };
 
 #endif INTRO_SCENE_H
+
