@@ -46,7 +46,7 @@ bool IntroScene::init()
     ImagenIntro->setVisible(true);
     this->addChild(ImagenIntro, 1);
     int positionImg = visibleSize.height - 8000;
-    auto action = MoveBy::create(70, Point(0, 2000));
+    auto action = MoveBy::create(120, Point(0, 2000));
     ImagenIntro->runAction(action);
 
 
