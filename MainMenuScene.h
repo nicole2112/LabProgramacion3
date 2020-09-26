@@ -52,6 +52,10 @@ private:
     cocos2d::MenuItemFont* menuItem1;
     cocos2d::MenuItemFont* menuItem2;
     cocos2d::MenuItemFont* menuItem3;
+    
+    Sprite* bgItem1;
+    Sprite* bgItem2;
+    Sprite* bgItem3;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
