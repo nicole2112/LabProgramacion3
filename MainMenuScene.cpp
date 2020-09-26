@@ -113,6 +113,30 @@ bool MainMenu::init()
     spriteFondo->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 8));
     this->addChild(spriteFondo, 0); //Añadir la imagen a la pantalla
 
+    //======================
+    //Colocar background
+
+    bgItem1 = Sprite::create("images/BGitem.png");
+    if (bgItem1 != nullptr) {
+        bgItem1->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 3));
+        bgItem1->setVisible(true);
+        this->addChild(bgItem1, 1);
+    }
+
+    bgItem2 = Sprite::create("images/BGitem.png");
+    if (bgItem2 != nullptr) {
+        bgItem2->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 2));
+        bgItem2->setVisible(true);
+        this->addChild(bgItem2, 1);
+    }
+
+    bgItem3 = Sprite::create("images/BGitem.png");
+    if (bgItem3 != nullptr) {
+        bgItem3->setPosition(Vec2(origin.x + visibleSize.width / 2, (visibleSize.height / 4) * 1));
+        bgItem3->setVisible(true);
+        this->addChild(bgItem3, 1);
+    }
+    
     //3. Crear cada menú ítem 
     menuItem1 = MenuItemFont::create("MAPA", CC_CALLBACK_1(MainMenu::mapaCloseCallback, this));
     menuItem1->setFontSizeObj(22);
@@ -138,7 +162,7 @@ bool MainMenu::init()
     this->addChild(menu, 1);
 
     //5. Agregar el label con el título
-    auto label = Label::createWithTTF("PRIMER JUEGO", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("FILOSOFANDO", "fonts/Marker Felt.ttf", 24);
     if (label != nullptr) {
         label->setColor(Color3B::BLACK);
         // position the label on the center of the screen
