@@ -50,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
 
     if(!glview) {
-        glview = GLViewImpl::create("PRIMER JUEGO");
+        glview = GLViewImpl::create("FILOSOFANDO");
         glview->setFrameSize(1200, 750);
         director->setOpenGLView(glview);
     }
